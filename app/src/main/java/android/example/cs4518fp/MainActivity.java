@@ -6,11 +6,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Locale;
 
 import be.tarsos.dsp.AudioDispatcher;
@@ -32,16 +29,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("TEST", "reached point 1");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED) {
-            Log.d("TEST", "reached point 2");
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
                     123);
-        } else {
-            Log.d("TEST", "reached point 3");
         }
-        Log.d("TEST", "reached point 4");
 
         AudioDispatcher dispatcher =
                 AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0);
@@ -70,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         createPitches();
     }
 
-    public void processPitch(float inputPitch) {
+    private void processPitch(float inputPitch) {
         mNoteText.setText(String.format(Locale.getDefault(), "%s", ""));
 
         if (inputPitch < 16 || inputPitch > 8000) {
@@ -105,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class Pitch {
-        String note;
-        float basePitch;
+        final String note;
+        final float basePitch;
 
         Pitch(String note, float basePitch) {
             this.note = note;
