@@ -2,11 +2,14 @@ package android.example.cs4518fp;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mPitchText;
     private TextView mNoteText;
+    private SeekBar mPitchSeekBar;
     private Pitch[] pitches;
 
     @Override
@@ -40,10 +44,13 @@ public class MainActivity extends AppCompatActivity {
 
         mPitchText = findViewById(R.id.pitchText);
         mNoteText = findViewById(R.id.noteText);
+        mPitchSeekBar = findViewById(R.id.pitchSeekBar);
+
+        mPitchSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
 
         PitchDetectionHandler pdh = new PitchDetectionHandler() {
             @Override
-            public void handlePitch(PitchDetectionResult res, AudioEvent e) {
+            public void handlePitch(@NonNull PitchDetectionResult res, AudioEvent e) {
                 final float pitchInHz = res.getPitch();
                 runOnUiThread(new Runnable() {
                     @Override
@@ -63,17 +70,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void processPitch(float inputPitch) {
-        mNoteText.setText(String.format(Locale.getDefault(), "%s", ""));
-
         if (inputPitch < 16 || inputPitch > 8000) {
             mPitchText.setText(String.format(Locale.getDefault(), "%s", "No pitch detected"));
             return;
         }
 
-        mPitchText.setText(String.format(Locale.getDefault(), "%f", inputPitch));
+        mPitchText.setText(String.format(Locale.getDefault(), "%d%s", (int) inputPitch, " Hz"));
 
-        for (Pitch pitch : pitches) {
+        for (int i = 0; i < pitches.length; i++) {
+            Pitch pitch = pitches[i];
             if (pitch.matches(inputPitch, (float) (inputPitch * 0.02))) {
+                mPitchSeekBar.setProgress(i);
                 mNoteText.setText(pitch.getNote());
             }
         }
@@ -95,6 +102,27 @@ public class MainActivity extends AppCompatActivity {
         pitches[10] = new Pitch("A#/B♭", 29.14f);
         pitches[11] = new Pitch("B/C♭", 30.87f);
     }
+
+    SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            try {
+                mNoteText.setText(pitches[progress].getNote());
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Toast.makeText(getApplicationContext(), "ArrayIndexOutOfBoundsException detected", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    };
 
     private class Pitch {
         final String note;
