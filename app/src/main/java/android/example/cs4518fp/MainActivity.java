@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 import be.tarsos.dsp.AudioDispatcher;
@@ -21,7 +23,9 @@ import be.tarsos.dsp.pitch.PitchProcessor;
 
 public class MainActivity extends AppCompatActivity {
 
+    private TextView mPitchText;
     private TextView mNoteText;
+    private Pitch[] pitches;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         AudioDispatcher dispatcher =
                 AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0);
 
+        mPitchText = findViewById(R.id.pitchText);
         mNoteText = findViewById(R.id.noteText);
 
         PitchDetectionHandler pdh = new PitchDetectionHandler() {
@@ -61,33 +66,66 @@ public class MainActivity extends AppCompatActivity {
 
         Thread audioThread = new Thread(dispatcher, "Audio Thread");
         audioThread.start();
+
+        createPitches();
     }
 
-    public void processPitch(float pitchInHz) {
+    public void processPitch(float inputPitch) {
+        mNoteText.setText(String.format(Locale.getDefault(), "%s", ""));
 
-        mNoteText.setText(String.format(Locale.getDefault(), "%f", pitchInHz));
+        if (inputPitch < 16 || inputPitch > 8000) {
+            mPitchText.setText(String.format(Locale.getDefault(), "%s", "No pitch detected"));
+            return;
+        }
 
-        if (pitchInHz >= 110 && pitchInHz < 123.47) {
-            //A
-            mNoteText.setText("A");
-        } else if (pitchInHz >= 123.47 && pitchInHz < 130.81) {
-            //B
-            mNoteText.setText("B");
-        } else if (pitchInHz >= 130.81 && pitchInHz < 146.83) {
-            //C
-            mNoteText.setText("C");
-        } else if (pitchInHz >= 146.83 && pitchInHz < 164.81) {
-            //D
-            mNoteText.setText("D");
-        } else if (pitchInHz >= 164.81 && pitchInHz <= 174.61) {
-            //E
-            mNoteText.setText("E");
-        } else if (pitchInHz >= 174.61 && pitchInHz < 185) {
-            //F
-            mNoteText.setText("F");
-        } else if (pitchInHz >= 185 && pitchInHz < 196) {
-            //G
-            mNoteText.setText("G");
+        mPitchText.setText(String.format(Locale.getDefault(), "%f", inputPitch));
+
+        for (Pitch pitch : pitches) {
+            if (pitch.matches(inputPitch, (float) (inputPitch * 0.02))) {
+                mNoteText.setText(pitch.getNote());
+            }
         }
     }
+
+    private void createPitches() {
+        pitches = new Pitch[12];
+
+        pitches[0] = new Pitch("B#/C", 16.35f);
+        pitches[1] = new Pitch("C#/D♭", 17.32f);
+        pitches[2] = new Pitch("D", 18.35f);
+        pitches[3] = new Pitch("D#/E♭", 19.45f);
+        pitches[4] = new Pitch("E/F♭", 20.60f);
+        pitches[5] = new Pitch("E#/F", 21.83f);
+        pitches[6] = new Pitch("F#/G♭", 23.12f);
+        pitches[7] = new Pitch("G", 24.50f);
+        pitches[8] = new Pitch("G#/A♭", 25.96f);
+        pitches[9] = new Pitch("A", 27.50f);
+        pitches[10] = new Pitch("A#/B♭", 29.14f);
+        pitches[11] = new Pitch("B/C♭", 30.87f);
+    }
+
+    private class Pitch {
+        String note;
+        float basePitch;
+
+        Pitch(String note, float basePitch) {
+            this.note = note;
+            this.basePitch = basePitch;
+        }
+
+        boolean matches(float pitch, float tolerance) {
+            float tempPitch = basePitch;
+            while (tempPitch < 8000) {
+                if (pitch >= (tempPitch - tolerance) && pitch <= (tempPitch + tolerance))
+                    return true;
+                tempPitch *= 2;
+            }
+            return false;
+        }
+
+        String getNote() {
+            return note;
+        }
+    }
+
 }
