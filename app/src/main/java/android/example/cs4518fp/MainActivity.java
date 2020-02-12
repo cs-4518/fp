@@ -7,6 +7,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,9 +23,16 @@ import be.tarsos.dsp.pitch.PitchDetectionResult;
 import be.tarsos.dsp.pitch.PitchProcessor;
 
 public class MainActivity extends AppCompatActivity {
+    private String storage1 = "";
+    private String storage2 = "";
+    private String storage3 = "";
+
 
     private TextView mPitchText;
     private TextView mNoteText;
+    //private TextView mStorageText1;
+    private TextView mStorageText2;
+    //private TextView mStorageText3;
     private SeekBar mPitchSeekBar;
     private Pitch[] pitches;
 
@@ -44,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
 
         mPitchText = findViewById(R.id.pitchText);
         mNoteText = findViewById(R.id.noteText);
+        //mStorageText1 = findViewById(R.id.storageText1);
+        mStorageText2 = findViewById(R.id.storageText2);
+        //mStorageText3 = findViewById(R.id.storageText3);
         mPitchSeekBar = findViewById(R.id.pitchSeekBar);
 
         mPitchSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
@@ -123,6 +134,22 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+    public void store(View view) {
+        if(storage1.equals("")) {
+            storage1 = pitches[mPitchSeekBar.getProgress()].getNote();
+            mStorageText2.setText(storage1);
+        } else if (storage2.equals("")) {
+            storage2 = storage1;
+            storage1 = pitches[mPitchSeekBar.getProgress()].getNote();
+            mStorageText2.setText(String.format("%s | %s", storage1, storage2));
+        } else {
+            storage3 = storage2;
+            storage2 = storage1;
+            storage1 = pitches[mPitchSeekBar.getProgress()].getNote();
+            mStorageText2.setText(String.format("%s | %s | %s", storage1, storage2, storage3));
+        }
+    }
 
     private class Pitch {
         final String note;

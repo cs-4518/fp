@@ -2,4 +2,7 @@
     <string name="app_name">Sym-Phone-ic</string>
     <string name="default_message">No pitch detected</string>
     <string name="default_note">C</string>
+    <string name="store">Store</string>
+    <string name="record">Record</string>
+    <string name="clear">Clear</string>
 </resources>
