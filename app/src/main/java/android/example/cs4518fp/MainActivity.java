@@ -23,16 +23,15 @@ import be.tarsos.dsp.pitch.PitchDetectionResult;
 import be.tarsos.dsp.pitch.PitchProcessor;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int NUM_PITCHES = 12;
+
     private String storage1 = "";
     private String storage2 = "";
     private String storage3 = "";
 
-
     private TextView mPitchText;
     private TextView mNoteText;
-    //private TextView mStorageText1;
-    private TextView mStorageText2;
-    //private TextView mStorageText3;
+    private TextView mStorageText;
     private SeekBar mPitchSeekBar;
     private Pitch[] pitches;
 
@@ -52,12 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
         mPitchText = findViewById(R.id.pitchText);
         mNoteText = findViewById(R.id.noteText);
-        //mStorageText1 = findViewById(R.id.storageText1);
-        mStorageText2 = findViewById(R.id.storageText2);
-        //mStorageText3 = findViewById(R.id.storageText3);
+        mStorageText = findViewById(R.id.storageText);
         mPitchSeekBar = findViewById(R.id.pitchSeekBar);
 
         mPitchSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
+        mPitchSeekBar.setMax(NUM_PITCHES - 1);
 
         PitchDetectionHandler pdh = new PitchDetectionHandler() {
             @Override
@@ -98,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createPitches() {
-        pitches = new Pitch[12];
+        pitches = new Pitch[NUM_PITCHES];
 
         //pitches[0] = new Pitch("B#/C", 16.35f);
         pitches[0] = new Pitch("C", 16.35f);
@@ -142,19 +140,24 @@ public class MainActivity extends AppCompatActivity {
     public void store(View view) {
         if(storage1.equals("")) {
             storage1 = pitches[mPitchSeekBar.getProgress()].getNote();
-            mStorageText2.setText(storage1);
+            mStorageText.setText(storage1);
         } else if (storage2.equals("")) {
             storage2 = pitches[mPitchSeekBar.getProgress()].getNote();
-            mStorageText2.setText(String.format("%s | %s", storage1, storage2));
+            mStorageText.setText(String.format("%s | %s", storage1, storage2));
         } else  if (storage3.equals("")){
             storage3 = pitches[mPitchSeekBar.getProgress()].getNote();
-            mStorageText2.setText(String.format("%s | %s | %s", storage1, storage2, storage3));
+            mStorageText.setText(String.format("%s | %s | %s", storage1, storage2, storage3));
         } else {
             storage3 = storage2;
             storage2 = storage1;
             storage1 = pitches[mPitchSeekBar.getProgress()].getNote();
-            mStorageText2.setText(String.format("%s | %s | %s", storage1, storage2, storage3));
+            mStorageText.setText(String.format("%s | %s | %s", storage1, storage2, storage3));
         }
+    }
+
+    public void clear(View view) {
+        storage1 = storage2 = storage3 = "";
+        mStorageText.setText("");
     }
 
     private class Pitch {
