@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">CS4518 FP</string>
+    <string name="app_name">SymPhoneic</string>
+    <string name="default_message">No pitch detected</string>
+    <string name="default_note">C</string>
+    <string name="store">Store</string>
+    <string name="record">Record</string>
+    <string name="clear">Clear</string>
 </resources>
