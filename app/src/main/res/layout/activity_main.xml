@@ -66,11 +66,29 @@
         android:textSize="36sp"
         android:layout_marginBottom="36dp" />
 
-    <Button
-        android:id="@+id/clearButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/clear"
-        android:onClick="clear"/>
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="36dp">
+
+        <Button
+            android:id="@+id/clearButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/clear"
+            android:onClick="clear"
+            android:layout_marginEnd="32dp"/>
+
+        <Button
+            android:id="@+id/newButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Button"
+            android:onClick="clear"
+            android:layout_marginStart="32dp"/>
+    </LinearLayout>
 
 </LinearLayout>
