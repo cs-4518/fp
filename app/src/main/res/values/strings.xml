@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sym-Phone-ic</string>
+    <string name="app_name">SymPhoneic</string>
     <string name="default_message">No pitch detected</string>
     <string name="default_note">C</string>
     <string name="store">Store</string>

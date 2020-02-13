@@ -32,7 +32,6 @@
         android:id="@+id/noteText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/default_note"
         android:textAlignment="center"
         android:textSize="64sp" />
 
