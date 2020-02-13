@@ -100,18 +100,22 @@ public class MainActivity extends AppCompatActivity {
     private void createPitches() {
         pitches = new Pitch[12];
 
-        pitches[0] = new Pitch("B#/C", 16.35f);
+        //pitches[0] = new Pitch("B#/C", 16.35f);
+        pitches[0] = new Pitch("C", 16.35f);
         pitches[1] = new Pitch("C#/D♭", 17.32f);
         pitches[2] = new Pitch("D", 18.35f);
         pitches[3] = new Pitch("D#/E♭", 19.45f);
-        pitches[4] = new Pitch("E/F♭", 20.60f);
-        pitches[5] = new Pitch("E#/F", 21.83f);
+        //pitches[4] = new Pitch("E/F♭", 20.60f);
+        pitches[4] = new Pitch("E", 20.60f);
+        //pitches[5] = new Pitch("E#/F", 21.83f);
+        pitches[5] = new Pitch("F", 21.83f);
         pitches[6] = new Pitch("F#/G♭", 23.12f);
         pitches[7] = new Pitch("G", 24.50f);
         pitches[8] = new Pitch("G#/A♭", 25.96f);
         pitches[9] = new Pitch("A", 27.50f);
         pitches[10] = new Pitch("A#/B♭", 29.14f);
-        pitches[11] = new Pitch("B/C♭", 30.87f);
+        //pitches[11] = new Pitch("B/C♭", 30.87f);
+        pitches[11] = new Pitch("B", 30.87f);
     }
 
     SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
@@ -140,9 +144,11 @@ public class MainActivity extends AppCompatActivity {
             storage1 = pitches[mPitchSeekBar.getProgress()].getNote();
             mStorageText2.setText(storage1);
         } else if (storage2.equals("")) {
-            storage2 = storage1;
-            storage1 = pitches[mPitchSeekBar.getProgress()].getNote();
+            storage2 = pitches[mPitchSeekBar.getProgress()].getNote();
             mStorageText2.setText(String.format("%s | %s", storage1, storage2));
+        } else  if (storage3.equals("")){
+            storage3 = pitches[mPitchSeekBar.getProgress()].getNote();
+            mStorageText2.setText(String.format("%s | %s | %s", storage1, storage2, storage3));
         } else {
             storage3 = storage2;
             storage2 = storage1;
