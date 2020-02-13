@@ -98,21 +98,17 @@ public class MainActivity extends AppCompatActivity {
     private void createPitches() {
         pitches = new Pitch[NUM_PITCHES];
 
-        //pitches[0] = new Pitch("B#/C", 16.35f);
         pitches[0] = new Pitch("C", 16.35f);
         pitches[1] = new Pitch("C#/D♭", 17.32f);
         pitches[2] = new Pitch("D", 18.35f);
         pitches[3] = new Pitch("D#/E♭", 19.45f);
-        //pitches[4] = new Pitch("E/F♭", 20.60f);
         pitches[4] = new Pitch("E", 20.60f);
-        //pitches[5] = new Pitch("E#/F", 21.83f);
         pitches[5] = new Pitch("F", 21.83f);
         pitches[6] = new Pitch("F#/G♭", 23.12f);
         pitches[7] = new Pitch("G", 24.50f);
         pitches[8] = new Pitch("G#/A♭", 25.96f);
         pitches[9] = new Pitch("A", 27.50f);
         pitches[10] = new Pitch("A#/B♭", 29.14f);
-        //pitches[11] = new Pitch("B/C♭", 30.87f);
         pitches[11] = new Pitch("B", 30.87f);
     }
 
