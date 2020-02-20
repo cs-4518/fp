@@ -56,6 +56,7 @@
         android:id="@+id/storageText1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#000000"
         android:textSize="24sp" />
 
     <TextView
@@ -69,6 +70,7 @@
         android:id="@+id/storageText3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#000000"
         android:textSize="24sp" />
 
     <LinearLayout
@@ -90,12 +92,12 @@
             android:textColor="#000000" />
 
         <Button
-            android:id="@+id/newButton"
+            android:id="@+id/chordProgressionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:background="@drawable/button_background"
-            android:onClick="clear"
+            android:onClick="showInfo"
             android:text="@string/new_button"
             android:textColor="#000000" />
     </LinearLayout>

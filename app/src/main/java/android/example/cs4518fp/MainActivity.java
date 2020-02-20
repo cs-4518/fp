@@ -1,6 +1,7 @@
 package android.example.cs4518fp;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -36,6 +37,25 @@ public class MainActivity extends AppCompatActivity {
     private TextView mStorageText3;
     private SeekBar mPitchSeekBar;
     private Pitch[] pitches;
+    String[] cMajor;
+    String[] fMajor = new String[7];
+    String[] dMajor = new String[7];
+    String[] aMajor = new String[7];
+    String[] bMajor = new String[7];
+    String[] gMajor = new String[7];
+    String[] eMajor = new String[7];
+
+    String[] bFlatMajor = new String[7];
+    String[] eFlatMajor = new String[7];
+    String[] aFlatMajor = new String[7];
+    String[] cFlatMajor = new String[7];
+    String[] gFlatMajor = new String[7];
+    String[] dFlatMajor = new String[7];
+
+    String[] fSharpMajor = new String[7];
+    String[] cSharpMajor = new String[7];
+    String[][] allScales;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +100,29 @@ public class MainActivity extends AppCompatActivity {
         audioThread.start();
 
         createPitches();
+        cMajor = new String[]{"a", "b", "c", "d", "e", "f", "g"};
+        gMajor = new String[]{"a", "b", "c", "d", "e", "f#", "g"};
+        dMajor = new String[]{"a", "b", "c#", "d", "e", "f#", "g"};
+        aMajor = new String[]{"a", "b", "c#", "d", "e", "f#", "g#"};
+        eMajor = new String[]{"a", "b", "c#", "d#", "e", "f#", "g#"};
+        bMajor = new String[]{"a#", "b", "c#", "d#", "e", "f#", "g#"};
+        fSharpMajor = new String[]{"a#", "b", "c#", "d#", "e#", "f#", "g#"};
+        cSharpMajor = new String[]{"a#", "b#", "c#", "d#", "e#", "f#", "g#"};
+
+
+        fMajor = new String[]{"a", "b♭", "c", "d", "e", "f", "g"};
+        bFlatMajor = new String[]{"a", "b♭", "c", "d", "e♭", "f", "g"};
+        eFlatMajor = new String[]{"a♭", "b♭", "c", "d", "e♭", "f", "g"};
+        aFlatMajor = new String[]{"a♭", "b♭", "c", "d♭", "e♭", "f", "g"};
+        dFlatMajor = new String[]{"a♭", "b♭", "c", "d♭", "e♭", "f", "g♭"};
+        gFlatMajor = new String[]{"a♭", "b♭", "c♭", "d♭", "e♭", "f", "g♭"};
+        cFlatMajor = new String[]{"a♭", "b♭", "c♭", "d♭", "e♭", "f♭", "g♭"};
+
+        allScales = new String[][]{cMajor, gMajor, dMajor, aMajor, eMajor,
+                bMajor, fSharpMajor, cSharpMajor, fMajor, bFlatMajor, eFlatMajor, aFlatMajor,
+                dFlatMajor, gFlatMajor, cFlatMajor};
+
+
     }
 
     private void processPitch(float inputPitch) {
@@ -138,13 +181,13 @@ public class MainActivity extends AppCompatActivity {
     };
 
     public void store(View view) {
-        if(storage1.equals("")) {
+        if (storage1.equals("")) {
             storage1 = pitches[mPitchSeekBar.getProgress()].getNote();
             mStorageText1.setText(storage1);
         } else if (storage2.equals("")) {
             storage2 = pitches[mPitchSeekBar.getProgress()].getNote();
             mStorageText2.setText(storage2);
-        } else  if (storage3.equals("")){
+        } else if (storage3.equals("")) {
             storage3 = pitches[mPitchSeekBar.getProgress()].getNote();
             mStorageText3.setText(storage3);
         } else {
@@ -162,6 +205,25 @@ public class MainActivity extends AppCompatActivity {
         mStorageText1.setText("");
         mStorageText2.setText("");
         mStorageText3.setText("");
+    }
+
+    public void showInfo(View view) {
+        if (storage1.equals("")) {
+            Toast.makeText(getApplicationContext(), "Please store one or more notes first", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent intent = new Intent(this, ChordProgressionActivity.class);
+        String message1 = storage1;
+        String message2 = storage2;
+        String message3 = storage3;
+        intent.putExtra("note1", message1);
+        if (storage2 != null)
+            intent.putExtra("note2", message2);
+        if (storage3 != null)
+            intent.putExtra("note3", message3);
+
+        startActivity(intent);
     }
 
     private class Pitch {

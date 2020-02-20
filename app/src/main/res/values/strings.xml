@@ -3,5 +3,8 @@
     <string name="default_message">No pitch detected</string>
     <string name="store">Store</string>
     <string name="clear">Clear</string>
-    <string name="new_button">New Button</string>
+    <string name="new_button">Show Info</string>
+    <string name="scales_text">Scales</string>
+    <string name="chord_progressions">Chord Progressions</string>
+    <string name="chord_progression_activity_name">Chord Progression Activity</string>
 </resources>
