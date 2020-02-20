@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/wood"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".MainActivity">
@@ -14,6 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/default_message"
+        android:textColor="#000000"
         android:textSize="30sp" />
 
     <SeekBar
@@ -21,74 +23,81 @@
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="36dp"
         android:max="11"
         android:progress="0"
-        android:layout_marginTop="36dp"
-        android:layout_marginBottom="36dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"/>
+        android:progressTint="#6B503B"
+        android:thumb="@drawable/custom_thumb" />
 
     <TextView
         android:id="@+id/noteText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:textColor="#00000000"
         android:textSize="64sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginTop="36dp"
-        android:layout_marginBottom="36dp">
 
-        <Button
-            android:id="@+id/recordButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/record"
-            android:layout_marginEnd="32dp"/>
-
-        <Button
-            android:id="@+id/storeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="store"
-            android:text="@string/store"
-            android:layout_marginStart="32dp" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/storageText"
+    <Button
+        android:id="@+id/storeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="36sp"
-        android:layout_marginBottom="36dp" />
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/button_background"
+        android:onClick="store"
+        android:text="@string/store"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/storageText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/storageText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/storageText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
         android:layout_marginTop="36dp"
-        android:layout_marginBottom="36dp">
+        android:layout_marginBottom="36dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/clearButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/clear"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/button_background"
             android:onClick="clear"
-            android:layout_marginEnd="32dp"/>
+            android:text="@string/clear"
+            android:textColor="#000000" />
 
         <Button
             android:id="@+id/newButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Button"
+            android:layout_marginStart="32dp"
+            android:background="@drawable/button_background"
             android:onClick="clear"
-            android:layout_marginStart="32dp"/>
+            android:text="@string/new_button"
+            android:textColor="#000000" />
     </LinearLayout>
 
 </LinearLayout>

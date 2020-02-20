@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">SymPhoneic</string>
     <string name="default_message">No pitch detected</string>
-    <string name="default_note">C</string>
     <string name="store">Store</string>
-    <string name="record">Record</string>
     <string name="clear">Clear</string>
+    <string name="new_button">New Button</string>
 </resources>

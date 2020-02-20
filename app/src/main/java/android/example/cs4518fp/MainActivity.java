@@ -31,7 +31,9 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mPitchText;
     private TextView mNoteText;
-    private TextView mStorageText;
+    private TextView mStorageText1;
+    private TextView mStorageText2;
+    private TextView mStorageText3;
     private SeekBar mPitchSeekBar;
     private Pitch[] pitches;
 
@@ -51,7 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
         mPitchText = findViewById(R.id.pitchText);
         mNoteText = findViewById(R.id.noteText);
-        mStorageText = findViewById(R.id.storageText);
+        mStorageText1 = findViewById(R.id.storageText1);
+        mStorageText2 = findViewById(R.id.storageText2);
+        mStorageText3 = findViewById(R.id.storageText3);
         mPitchSeekBar = findViewById(R.id.pitchSeekBar);
 
         mPitchSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
@@ -99,20 +103,20 @@ public class MainActivity extends AppCompatActivity {
         pitches = new Pitch[NUM_PITCHES];
 
         pitches[0] = new Pitch("C", 16.35f);
-        pitches[1] = new Pitch("C#/D♭", 17.32f);
+        pitches[1] = new Pitch("C♯/D♭", 17.32f);
         pitches[2] = new Pitch("D", 18.35f);
-        pitches[3] = new Pitch("D#/E♭", 19.45f);
+        pitches[3] = new Pitch("D♯/E♭", 19.45f);
         pitches[4] = new Pitch("E", 20.60f);
         pitches[5] = new Pitch("F", 21.83f);
-        pitches[6] = new Pitch("F#/G♭", 23.12f);
+        pitches[6] = new Pitch("F♯/G♭", 23.12f);
         pitches[7] = new Pitch("G", 24.50f);
-        pitches[8] = new Pitch("G#/A♭", 25.96f);
+        pitches[8] = new Pitch("G♯/A♭", 25.96f);
         pitches[9] = new Pitch("A", 27.50f);
-        pitches[10] = new Pitch("A#/B♭", 29.14f);
+        pitches[10] = new Pitch("A♯/B♭", 29.14f);
         pitches[11] = new Pitch("B", 30.87f);
     }
 
-    SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+    private final SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             try {
@@ -136,24 +140,28 @@ public class MainActivity extends AppCompatActivity {
     public void store(View view) {
         if(storage1.equals("")) {
             storage1 = pitches[mPitchSeekBar.getProgress()].getNote();
-            mStorageText.setText(storage1);
+            mStorageText1.setText(storage1);
         } else if (storage2.equals("")) {
             storage2 = pitches[mPitchSeekBar.getProgress()].getNote();
-            mStorageText.setText(String.format("%s | %s", storage1, storage2));
+            mStorageText2.setText(storage2);
         } else  if (storage3.equals("")){
             storage3 = pitches[mPitchSeekBar.getProgress()].getNote();
-            mStorageText.setText(String.format("%s | %s | %s", storage1, storage2, storage3));
+            mStorageText3.setText(storage3);
         } else {
             storage3 = storage2;
             storage2 = storage1;
             storage1 = pitches[mPitchSeekBar.getProgress()].getNote();
-            mStorageText.setText(String.format("%s | %s | %s", storage1, storage2, storage3));
+            mStorageText1.setText(storage1);
+            mStorageText2.setText(storage2);
+            mStorageText3.setText(storage3);
         }
     }
 
     public void clear(View view) {
         storage1 = storage2 = storage3 = "";
-        mStorageText.setText("");
+        mStorageText1.setText("");
+        mStorageText2.setText("");
+        mStorageText3.setText("");
     }
 
     private class Pitch {
