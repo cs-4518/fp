@@ -2,6 +2,7 @@ package android.example.cs4518fp;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -25,6 +26,7 @@ import be.tarsos.dsp.pitch.PitchProcessor;
 
 public class MainActivity extends AppCompatActivity {
     private static final int NUM_PITCHES = 12;
+    private static final String PERSISTENT_FILE = "com.example.android.cs4518fp";
 
     private String storage1 = "";
     private String storage2 = "";
@@ -37,25 +39,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView mStorageText3;
     private SeekBar mPitchSeekBar;
     private Pitch[] pitches;
-    String[] cMajor;
-    String[] fMajor = new String[7];
-    String[] dMajor = new String[7];
-    String[] aMajor = new String[7];
-    String[] bMajor = new String[7];
-    String[] gMajor = new String[7];
-    String[] eMajor = new String[7];
 
-    String[] bFlatMajor = new String[7];
-    String[] eFlatMajor = new String[7];
-    String[] aFlatMajor = new String[7];
-    String[] cFlatMajor = new String[7];
-    String[] gFlatMajor = new String[7];
-    String[] dFlatMajor = new String[7];
+    private final String STRING_KEY = "note";
+    private final String STRING_KEY2 = "note2";
+    private final String STRING_KEY3 = "note3";
 
-    String[] fSharpMajor = new String[7];
-    String[] cSharpMajor = new String[7];
-    String[][] allScales;
-
+    private SharedPreferences mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
         mPitchSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
         mPitchSeekBar.setMax(NUM_PITCHES - 1);
 
+        mPreferences = getSharedPreferences(PERSISTENT_FILE, MODE_PRIVATE);
+
         PitchDetectionHandler pdh = new PitchDetectionHandler() {
             @Override
             public void handlePitch(@NonNull PitchDetectionResult res, AudioEvent e) {
@@ -100,29 +91,25 @@ public class MainActivity extends AppCompatActivity {
         audioThread.start();
 
         createPitches();
-        cMajor = new String[]{"a", "b", "c", "d", "e", "f", "g"};
-        gMajor = new String[]{"a", "b", "c", "d", "e", "f#", "g"};
-        dMajor = new String[]{"a", "b", "c#", "d", "e", "f#", "g"};
-        aMajor = new String[]{"a", "b", "c#", "d", "e", "f#", "g#"};
-        eMajor = new String[]{"a", "b", "c#", "d#", "e", "f#", "g#"};
-        bMajor = new String[]{"a#", "b", "c#", "d#", "e", "f#", "g#"};
-        fSharpMajor = new String[]{"a#", "b", "c#", "d#", "e#", "f#", "g#"};
-        cSharpMajor = new String[]{"a#", "b#", "c#", "d#", "e#", "f#", "g#"};
 
+        storage1 = mPreferences.getString(STRING_KEY, "");
+        storage2 = mPreferences.getString(STRING_KEY2, "");
+        storage3 = mPreferences.getString(STRING_KEY3, "");
 
-        fMajor = new String[]{"a", "b♭", "c", "d", "e", "f", "g"};
-        bFlatMajor = new String[]{"a", "b♭", "c", "d", "e♭", "f", "g"};
-        eFlatMajor = new String[]{"a♭", "b♭", "c", "d", "e♭", "f", "g"};
-        aFlatMajor = new String[]{"a♭", "b♭", "c", "d♭", "e♭", "f", "g"};
-        dFlatMajor = new String[]{"a♭", "b♭", "c", "d♭", "e♭", "f", "g♭"};
-        gFlatMajor = new String[]{"a♭", "b♭", "c♭", "d♭", "e♭", "f", "g♭"};
-        cFlatMajor = new String[]{"a♭", "b♭", "c♭", "d♭", "e♭", "f♭", "g♭"};
-
-        allScales = new String[][]{cMajor, gMajor, dMajor, aMajor, eMajor,
-                bMajor, fSharpMajor, cSharpMajor, fMajor, bFlatMajor, eFlatMajor, aFlatMajor,
-                dFlatMajor, gFlatMajor, cFlatMajor};
-
-
+        if (!storage1.equals("")) {
+            if (!storage2.equals("")) {
+                if (!(storage3 == null) && !storage3.equals("")) {
+                    mStorageText1.setText(String.format("%s", storage1));
+                    mStorageText2.setText(String.format("%s", storage2));
+                    mStorageText3.setText(String.format("%s", storage3));
+                } else {
+                    mStorageText1.setText(String.format("%s", storage1));
+                    mStorageText2.setText(String.format("%s", storage2));
+                }
+            } else {
+                mStorageText1.setText(String.format("%s", storage1));
+            }
+        }
     }
 
     private void processPitch(float inputPitch) {
@@ -205,6 +192,11 @@ public class MainActivity extends AppCompatActivity {
         mStorageText1.setText("");
         mStorageText2.setText("");
         mStorageText3.setText("");
+
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        preferencesEditor.clear();
+        preferencesEditor.apply();
+
     }
 
     public void showInfo(View view) {
@@ -248,6 +240,17 @@ public class MainActivity extends AppCompatActivity {
         String getNote() {
             return note;
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        preferencesEditor.putString(STRING_KEY, storage1);
+        preferencesEditor.putString(STRING_KEY2, storage2);
+        preferencesEditor.putString(STRING_KEY3, storage3);
+        preferencesEditor.apply();
+
     }
 
 }

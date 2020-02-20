@@ -6,57 +6,21 @@ import android.util.Log;
 import android.widget.TextView;
 
 public class ChordProgressionActivity extends AppCompatActivity {
-    String[] cMajor;
-    String[] fMajor = new String[8];
-    String[] dMajor = new String[8];
-    String[] aMajor = new String[8];
-    String[] bMajor = new String[8];
-    String[] gMajor = new String[8];
-    String[] eMajor = new String[8];
 
-    String[] bFlatMajor = new String[8];
-    String[] eFlatMajor = new String[8];
-    String[] aFlatMajor = new String[8];
-    String[] cFlatMajor = new String[8];
-    String[] gFlatMajor = new String[8];
-    String[] dFlatMajor = new String[8];
+    private final String[] note = new String[3];
 
-    String[] fSharpMajor = new String[8];
-    String[] cSharpMajor = new String[8];
-    String[][] allScales;
+    private String[][] allScales;
 
-    String[] note = new String[3];
-
-    TextView tvChords;
-    TextView tvScales;
+    private TextView tvChords;
+    private TextView tvScales;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chord_progression);
-        cMajor = new String[]{"A", "B", "C", "D", "E", "F", "G", "C Major"};
-        gMajor = new String[]{"A", "B", "C", "D", "E", "F♯", "G", "G Major"};
-        dMajor = new String[]{"A", "B", "C♯", "D", "E", "F♯", "G", "D Major"};
-        aMajor = new String[]{"A", "B", "C♯", "D", "E", "F♯", "G♯", "A Major"};
-        eMajor = new String[]{"A", "B", "C♯", "D♯", "E", "F♯", "G♯", "E Major"};
-        bMajor = new String[]{"A♯", "B", "C♯", "D♯", "E", "F♯", "G♯", "B Major"};
-        fSharpMajor = new String[]{"A♯", "B", "C♯", "D♯", "E♯", "F♯", "G♯", "F Sharp Major"};
-        cSharpMajor = new String[]{"A♯", "B♯", "C♯", "D♯", "E♯", "F♯", "G♯", "C Sharp Major"};
 
-
-        fMajor = new String[]{"A", "B♭", "C", "D", "E", "F", "G", "F Major"};
-        bFlatMajor = new String[]{"A", "B♭", "C", "D", "E♭", "F", "G", "B Flat Major"};
-        eFlatMajor = new String[]{"A♭", "B♭", "C", "D", "E♭", "F", "G", "E Flat Major"};
-        aFlatMajor = new String[]{"A♭", "B♭", "C", "D♭", "E♭", "F", "G", "A Flat Major"};
-        dFlatMajor = new String[]{"A♭", "B♭", "C", "D♭", "E♭", "F", "G♭", "D Flat Major"};
-        gFlatMajor = new String[]{"A♭", "B♭", "C♭", "D♭", "E♭", "F", "G♭", "G Flat Major"};
-        cFlatMajor = new String[]{"A♭", "B♭", "C♭", "D♭", "E♭", "F♭", "G♭", "C Flat Major"};
-
-        allScales = new String[][]{cMajor, gMajor, dMajor, aMajor, eMajor,
-                bMajor, fSharpMajor, cSharpMajor, fMajor, bFlatMajor, eFlatMajor, aFlatMajor,
-                dFlatMajor, gFlatMajor, cFlatMajor};
-
+        makeScales();
 
         tvChords = findViewById(R.id.chords);
         tvScales = findViewById(R.id.scales);
@@ -74,7 +38,7 @@ public class ChordProgressionActivity extends AppCompatActivity {
     }
 
 
-    public void findChords(String[] note) {
+    private void findChords(String[] note) {
         boolean check1, check2, check3;
         int I = 0;
         int II = 1;
@@ -311,5 +275,28 @@ public class ChordProgressionActivity extends AppCompatActivity {
         note[0] = "";
         note[1] = "";
         note[2] = "";
+    }
+
+    private void makeScales() {
+        String[] cMajor = new String[]{"A", "B", "C", "D", "E", "F", "G", "C Major"};
+        String[] gMajor = new String[]{"A", "B", "C", "D", "E", "F♯", "G", "G Major"};
+        String[] dMajor = new String[]{"A", "B", "C♯", "D", "E", "F♯", "G", "D Major"};
+        String[] aMajor = new String[]{"A", "B", "C♯", "D", "E", "F♯", "G♯", "A Major"};
+        String[] eMajor = new String[]{"A", "B", "C♯", "D♯", "E", "F♯", "G♯", "E Major"};
+        String[] bMajor = new String[]{"A♯", "B", "C♯", "D♯", "E", "F♯", "G♯", "B Major"};
+        String[] fSharpMajor = new String[]{"A♯", "B", "C♯", "D♯", "E♯", "F♯", "G♯", "F Sharp Major"};
+        String[] cSharpMajor = new String[]{"A♯", "B♯", "C♯", "D♯", "E♯", "F♯", "G♯", "C Sharp Major"};
+
+        String[] fMajor = new String[]{"A", "B♭", "C", "D", "E", "F", "G", "F Major"};
+        String[] bFlatMajor = new String[]{"A", "B♭", "C", "D", "E♭", "F", "G", "B Flat Major"};
+        String[] eFlatMajor = new String[]{"A♭", "B♭", "C", "D", "E♭", "F", "G", "E Flat Major"};
+        String[] aFlatMajor = new String[]{"A♭", "B♭", "C", "D♭", "E♭", "F", "G", "A Flat Major"};
+        String[] dFlatMajor = new String[]{"A♭", "B♭", "C", "D♭", "E♭", "F", "G♭", "D Flat Major"};
+        String[] gFlatMajor = new String[]{"A♭", "B♭", "C♭", "D♭", "E♭", "F", "G♭", "G Flat Major"};
+        String[] cFlatMajor = new String[]{"A♭", "B♭", "C♭", "D♭", "E♭", "F♭", "G♭", "C Flat Major"};
+
+        allScales = new String[][]{cMajor, gMajor, dMajor, aMajor, eMajor,
+                bMajor, fSharpMajor, cSharpMajor, fMajor, bFlatMajor, eFlatMajor, aFlatMajor,
+                dFlatMajor, gFlatMajor, cFlatMajor};
     }
 }
