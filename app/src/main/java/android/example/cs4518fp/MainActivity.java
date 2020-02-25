@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -28,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int NUM_PITCHES = 12;
     private static final String PERSISTENT_FILE = "com.example.android.cs4518fp";
 
+    private boolean help_visible = false;
+
     private String storage1 = "";
     private String storage2 = "";
     private String storage3 = "";
@@ -37,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView mStorageText1;
     private TextView mStorageText2;
     private TextView mStorageText3;
+    private TextView mHelpText;
+    private ConstraintLayout mHelpLayout;
     private SeekBar mPitchSeekBar;
     private Pitch[] pitches;
 
@@ -65,8 +71,13 @@ public class MainActivity extends AppCompatActivity {
         mStorageText1 = findViewById(R.id.storageText1);
         mStorageText2 = findViewById(R.id.storageText2);
         mStorageText3 = findViewById(R.id.storageText3);
-        mPitchSeekBar = findViewById(R.id.pitchSeekBar);
 
+        mHelpLayout = findViewById(R.id.helpLayout);
+
+        mHelpText = findViewById(R.id.helpText);
+        mHelpText.setMovementMethod(new ScrollingMovementMethod());
+
+        mPitchSeekBar = findViewById(R.id.pitchSeekBar);
         mPitchSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
         mPitchSeekBar.setMax(NUM_PITCHES - 1);
 
@@ -113,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void processPitch(float inputPitch) {
+        if (help_visible) return;
+
         if (inputPitch < 16 || inputPitch > 8000) {
             mPitchText.setText(String.format(Locale.getDefault(), "%s", "No pitch detected"));
             return;
@@ -133,16 +146,16 @@ public class MainActivity extends AppCompatActivity {
         pitches = new Pitch[NUM_PITCHES];
 
         pitches[0] = new Pitch("C", 16.35f);
-        pitches[1] = new Pitch("C♯/D♭", 17.32f);
+        pitches[1] = new Pitch("C♯/ D♭", 17.32f);
         pitches[2] = new Pitch("D", 18.35f);
-        pitches[3] = new Pitch("D♯/E♭", 19.45f);
+        pitches[3] = new Pitch("D♯/ E♭", 19.45f);
         pitches[4] = new Pitch("E", 20.60f);
         pitches[5] = new Pitch("F", 21.83f);
-        pitches[6] = new Pitch("F♯/G♭", 23.12f);
+        pitches[6] = new Pitch("F♯/ G♭", 23.12f);
         pitches[7] = new Pitch("G", 24.50f);
-        pitches[8] = new Pitch("G♯/A♭", 25.96f);
+        pitches[8] = new Pitch("G♯/ A♭", 25.96f);
         pitches[9] = new Pitch("A", 27.50f);
-        pitches[10] = new Pitch("A♯/B♭", 29.14f);
+        pitches[10] = new Pitch("A♯/ B♭", 29.14f);
         pitches[11] = new Pitch("B", 30.87f);
     }
 
@@ -196,7 +209,17 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
         preferencesEditor.clear();
         preferencesEditor.apply();
+    }
 
+    public void toggleHelp(View view) {
+        if (help_visible) {
+            help_visible = false;
+            mHelpLayout.setVisibility(View.INVISIBLE);
+        } else {
+            help_visible = true;
+            mHelpText.scrollTo(0, 0);
+            mHelpLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     public void showInfo(View view) {
