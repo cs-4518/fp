@@ -35,6 +35,9 @@ public class ChordProgressionActivity extends AppCompatActivity {
         mHelpText.setMovementMethod(new ScrollingMovementMethod());
 
         Bundle extras = getIntent().getExtras();
+
+        TextView mStorageText = findViewById(R.id.storageText);
+
         note[0] = "";
         note[1] = "";
         note[2] = "";
@@ -43,6 +46,8 @@ public class ChordProgressionActivity extends AppCompatActivity {
             note[0] = extras.getString("note1");
             note[1] = extras.getString("note2");
             note[2] = extras.getString("note3");
+
+            mStorageText.setText(String.format("%s, %s, %s", note[0], note[1], note[2]));
         }
         findChords(note);
     }
@@ -236,28 +241,28 @@ public class ChordProgressionActivity extends AppCompatActivity {
             }
             if (!note[1].equals("") && note[2].equals("") & check1 && check2) {
                 Log.d("testLoop", "testLoop");
-                /*mScalesText.append(allScales[i][7] + " (" + allScales[i][0] + "-" + allScales[i][1] + "-"
-                        + allScales[i][2] + "-" + allScales[i][3] + "-" + allScales[i][4]
-                        + "-" + allScales[i][5] + "-" + allScales[i][6] + ")\n");*/
+                /*mScalesText.append(allScales[i][7] + " (" + allScales[i][0] + " - " + allScales[i][1] + " - "
+                        + allScales[i][2] + " - " + allScales[i][3] + " - " + allScales[i][4]
+                        + " - " + allScales[i][5] + " - " + allScales[i][6] + ")\n");*/
                 mChordText.setText("");
                 mScalesText.setText("");
                 mScalesText.append(allScales[i][7] + "\n");
-                mChordText.append(allScales[i][I] + "-" + allScales[i][V] + "-" + allScales[i][VI] + "m-" + allScales[i][IV] + "\n");
-                mChordText.append(allScales[i][I] + "-" + allScales[i][IV] + "-" + allScales[i][V] + "\n");
+                mChordText.append(allScales[i][I] + " - " + allScales[i][V] + " - " + allScales[i][VI] + "m -" + allScales[i][IV] + "\n");
+                mChordText.append(allScales[i][I] + " - " + allScales[i][IV] + " - " + allScales[i][V] + "\n");
             } else if (!note[1].equals("") && !note[2].equals("") && check1 && check2 && check3) {
                 mChordText.setText("");
                 mScalesText.setText("");
                 mScalesText.append(allScales[i][7] + "\n");
 
-                mChordText.append(allScales[i][I] + "-" + allScales[i][V] + "-" + allScales[i][VI] + "m-" + allScales[i][IV] + "\n");
-                mChordText.append(allScales[i][I] + "-" + allScales[i][IV] + "-" + allScales[i][V] + "\n");
+                mChordText.append(allScales[i][I] + " - " + allScales[i][V] + " - " + allScales[i][VI] + "m -" + allScales[i][IV] + "\n");
+                mChordText.append(allScales[i][I] + " - " + allScales[i][IV] + " - " + allScales[i][V] + "\n");
             } else if (note[1].equals("") && note[2].equals("") && check1) {
                 mChordText.setText("");
                 mScalesText.setText("");
                 mScalesText.append(allScales[i][7] + "\n");
 
-                mChordText.append(allScales[i][I] + "-" + allScales[i][V] + "-" + allScales[i][VI] + "m-" + allScales[i][IV] + "\n");
-                mChordText.append(allScales[i][I] + "-" + allScales[i][IV] + "-" + allScales[i][V] + "\n");
+                mChordText.append(allScales[i][I] + " - " + allScales[i][V] + " - " + allScales[i][VI] + "m -" + allScales[i][IV] + "\n");
+                mChordText.append(allScales[i][I] + " - " + allScales[i][IV] + " - " + allScales[i][V] + "\n");
             }
 
 

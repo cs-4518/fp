@@ -222,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     public void showInfo(View view) {
         if (storage1.equals("")) {
             Toast.makeText(getApplicationContext(), "Please store one or more notes first", Toast.LENGTH_SHORT).show();

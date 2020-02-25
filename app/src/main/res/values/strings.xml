@@ -20,8 +20,9 @@
      Then, when you\'ve decided on a note, press the \"&store_button;\" button to save it. After storing one to
     three notes, press the \"&chord_prog_button;\" button to see common chord progressions involving the notes
         you\'ve selected.\n\nPress the ? button in the top right again to hide this menu.</string>
-    <string name="scales_text">Scales</string>
-    <string name="chord_progressions">Chord Progressions</string>
+    <string name="scales_text">  Scales  </string>
+    <string name="chord_progressions">  Chord Progressions  </string>
+    <string name="notes_text">  Your Chosen Notes  </string>
     <string name="chord_progression_activity_name">Chord Progression Activity</string>
     <string name="chord_help_title">Chord\nRecommendations</string>
     <string name="chord_help_text">This screen contains recommendation for scales and chord progressions
