@@ -11,7 +11,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,12 +47,15 @@ public class MainActivity extends AppCompatActivity {
     private ConstraintLayout mHelpLayout;
     private SeekBar mPitchSeekBar;
     private Pitch[] pitches;
+    private Button pauseB;
 
     private final String STRING_KEY = "note";
     private final String STRING_KEY2 = "note2";
     private final String STRING_KEY3 = "note3";
 
     private SharedPreferences mPreferences;
+    AudioDispatcher dispatcher;
+    boolean pause = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +67,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
                     123);
         }
-
-        AudioDispatcher dispatcher =
-                AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0);
+        dispatcher = AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0);
 
         mPitchText = findViewById(R.id.pitchText);
         mNoteText = findViewById(R.id.noteText);
@@ -82,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
         mPitchSeekBar.setMax(NUM_PITCHES - 1);
 
         mPreferences = getSharedPreferences(PERSISTENT_FILE, MODE_PRIVATE);
+        pauseB = findViewById(R.id.pauseButton);
+        pauseB.setText("  Stop Recording  ");
 
         PitchDetectionHandler pdh = new PitchDetectionHandler() {
             @Override
@@ -240,6 +245,52 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("note3", message3);
 
         startActivity(intent);
+    }
+
+    public void pause(View view) {
+
+        if(pause){
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
+                        123);
+            }
+            dispatcher = AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0);
+
+
+            mPreferences = getSharedPreferences(PERSISTENT_FILE, MODE_PRIVATE);
+
+            PitchDetectionHandler pdh = new PitchDetectionHandler() {
+                @Override
+                public void handlePitch(@NonNull PitchDetectionResult res, AudioEvent e) {
+                    final float pitchInHz = res.getPitch();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            processPitch(pitchInHz);
+                        }
+                    });
+                }
+            };
+            AudioProcessor pitchProcessor = new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.FFT_YIN, 22050, 1024, pdh);
+            dispatcher.addAudioProcessor(pitchProcessor);
+
+            Thread audioThread = new Thread(dispatcher, "Audio Thread");
+            audioThread.start();
+            pause = false;
+            pauseB.setText("  Stop Recording  ");
+        } else {
+            try {
+                if (!dispatcher.isStopped()) {
+                    dispatcher.stop();
+                    pause = true;
+                    pauseB.setText("  Start Recording  ");
+                }
+            } catch (Exception ex) {
+                Toast.makeText(this, "Error: " + ex, Toast.LENGTH_LONG).show();
+            }
+
+        }
     }
 
     private class Pitch {

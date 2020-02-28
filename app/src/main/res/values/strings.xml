@@ -32,4 +32,5 @@
         different combination of notes.</string>
     <string name="chord_prog_default">No chord progressions found with the notes you selected,
         please try a different combination of notes.</string>
+    <string name="stop_recording">  Stop Recording  </string>
 </resources>
