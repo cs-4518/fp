@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -54,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
     private Button mClearButton;
     private Button mStoreButton;
     private Button mProgButton;
-    private TextView mPitchTextTitle;
-    private final static String TAG = "AppActivity";
 
 
     private SharedPreferences mPreferences;
@@ -65,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate() created");
         setContentView(R.layout.activity_main);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
@@ -82,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
         mStorageText1 = findViewById(R.id.storageText1);
         mStorageText2 = findViewById(R.id.storageText2);
         mStorageText3 = findViewById(R.id.storageText3);
+
+        mClearButton = findViewById(R.id.clearButton);
+        mStoreButton = findViewById(R.id.storeButton);
+        mProgButton = findViewById(R.id.chordProgressionButton);
 
         mHelpLayout = findViewById(R.id.helpLayout);
 
@@ -134,18 +134,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart() called");
-    }
-
-
     private void processPitch(float inputPitch) {
         if (help_visible) return;
 
         if (inputPitch < 16 || inputPitch > 8000) {
-            mPitchText.setText(String.format(Locale.getDefault(), "%s", "No pitch detected"));
+            mPitchText.setText(String.format(Locale.getDefault(), "%s", "0 Hz"));
             return;
         }
 
@@ -230,19 +223,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toggleHelp(View view) {
-        mClearButton = findViewById(R.id.clearButton);
-        mStoreButton = findViewById(R.id.storeButton);
-        mProgButton = findViewById(R.id.chordProgressionButton);
-        mPitchTextTitle = findViewById(R.id.pitchText);
-
-
         if (help_visible) {
             help_visible = false;
             mHelpLayout.setVisibility(View.INVISIBLE);
             mStoreButton.setVisibility(View.VISIBLE);
             mClearButton.setVisibility(View.VISIBLE);
             mProgButton.setVisibility(View.VISIBLE);
-            mPitchTextTitle.setVisibility(View.VISIBLE);
+            mPitchText.setVisibility(View.VISIBLE);
 
         } else {
             help_visible = true;
@@ -251,12 +238,12 @@ public class MainActivity extends AppCompatActivity {
             mStoreButton.setVisibility(View.INVISIBLE);
             mClearButton.setVisibility(View.INVISIBLE);
             mProgButton.setVisibility(View.INVISIBLE);
-            mPitchTextTitle.setVisibility(View.INVISIBLE);
+            mPitchText.setVisibility(View.INVISIBLE);
         }
     }
 
 
-    public void showInfo(View view) {
+    public void goToChordProgressions(View view) {
         if (storage1.equals("")) {
             Toast.makeText(getApplicationContext(), "Please store one or more notes first", Toast.LENGTH_SHORT).show();
             return;
@@ -267,43 +254,17 @@ public class MainActivity extends AppCompatActivity {
         String message2 = storage2;
         String message3 = storage3;
         intent.putExtra("note1", message1);
-        if (storage2 != null)
+        if (storage2 != null && !storage2.equals(""))
             intent.putExtra("note2", message2);
-        if (storage3 != null)
+        if (storage3 != null && !storage3.equals(""))
             intent.putExtra("note3", message3);
 
         startActivity(intent);
     }
 
-    private class Pitch {
-        final String note;
-        final float basePitch;
-
-        Pitch(String note, float basePitch) {
-            this.note = note;
-            this.basePitch = basePitch;
-        }
-
-        boolean matches(float pitch, float tolerance) {
-            float tempPitch = basePitch;
-            while (tempPitch < 8000) {
-                if (pitch >= (tempPitch - tolerance) && pitch <= (tempPitch + tolerance))
-                    return true;
-                tempPitch *= 2;
-            }
-            return false;
-        }
-
-        String getNote() {
-            return note;
-        }
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause() called");
-
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
         preferencesEditor.putString(STRING_KEY, storage1);
         preferencesEditor.putString(STRING_KEY2, storage2);
@@ -315,7 +276,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume() called");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
@@ -324,8 +284,6 @@ public class MainActivity extends AppCompatActivity {
 
         dispatcher =
                 AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0);
-
-
 
         PitchDetectionHandler pdh = new PitchDetectionHandler() {
             @Override
@@ -345,17 +303,4 @@ public class MainActivity extends AppCompatActivity {
         Thread audioThread = new Thread(dispatcher, "Audio Thread");
         audioThread.start();
     }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop() called");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy() called");
-    }
-
 }

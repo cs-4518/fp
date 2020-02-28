@@ -23,6 +23,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="android.example.cs4518fp.MainActivity" />
         </activity>
+        <activity
+            android:name=".FavoriteActivity"
+            android:label="@string/favorite_activity_name"
+            android:parentActivityName=".ChordProgressionActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="android.example.cs4518fp.ChordProgressionActivity" />
+        </activity>
         <activity android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>

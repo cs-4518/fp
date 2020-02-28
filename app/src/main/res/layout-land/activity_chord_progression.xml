@@ -25,23 +25,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.405" />
 
-    <ScrollView
-        android:id="@+id/scaleScroll"
-        android:layout_width="wrap_content"
-        android:layout_height="175dp"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/scaleRecycler"
+        android:layout_width="160dp"
+        android:layout_height="140dp"
+        android:layout_marginStart="32dp"
+        android:background="@color/colorLight"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/title"
-        app:layout_constraintStart_toStartOf="@+id/title"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        app:layout_constraintVertical_bias="0.333">
-
-        <TextView
-            android:id="@+id/scales"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:textSize="24sp" />
-    </ScrollView>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <TextView
         android:id="@+id/chordTitle"
@@ -59,24 +52,28 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.405" />
 
-    <ScrollView
-        android:id="@+id/chordScroll"
-        android:layout_width="wrap_content"
-        android:layout_height="175dp"
-        android:layout_marginBottom="16dp"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/chordRecycler"
+        android:layout_width="260dp"
+        android:layout_height="140dp"
+        android:layout_marginEnd="77dp"
+        android:background="@color/colorLight"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/chordTitle"
-        app:layout_constraintStart_toStartOf="@+id/chordTitle"
-        app:layout_constraintTop_toBottomOf="@+id/chordTitle"
-        app:layout_constraintVertical_bias="0.517">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chordTitle" />
 
-        <TextView
-            android:id="@+id/chords"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:textSize="24sp" />
-    </ScrollView>
+    <ImageButton
+        android:id="@+id/favoriteButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@null"
+        android:contentDescription="@string/favorite_desc"
+        android:onClick="goToFavorites"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/favorites" />
 
     <ImageButton
         android:id="@+id/helpButton"
@@ -90,55 +87,55 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/help" />
 
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/helpLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="36dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="36dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@color/colorLight"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0">
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/helpLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/colorLight"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
-                    <TextView
-                        android:id="@+id/helpTitle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginEnd="24dp"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:text="@string/chord_help_title"
-                        android:textSize="24sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/helpTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/chord_help_title"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/helpText"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginEnd="24dp"
-                        android:layout_marginBottom="24dp"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:scrollbars="vertical"
-                        android:text="@string/chord_help_text"
-                        android:textSize="18sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/helpTitle" />
+        <TextView
+            android:id="@+id/helpText"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:scrollbars="vertical"
+            android:text="@string/chord_help_text"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/helpTitle" />
 
-                </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
 
     <TextView
         android:id="@+id/notes"
