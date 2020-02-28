@@ -30,7 +30,8 @@
     <string name="chord_help_text">This screen contains recommendation for scales and chord progressions
     that include the notes you selected. Press the star next to a chord progression to add it to
         your favorites. If you make a mistake, you can press the star again to remove it from your
-        favorites.\n\nPress your device\'s back button to return to the previous screen, or press
+        favorites. To view all chord progressions you\'ve favorited, press the star button in the
+        top left corner.\n\nPress your device\'s back button to return to the previous screen, or press
         the ? button in the top right again to hide this menu.</string>
     <string name="scales_default">No scales found with the notes you selected. Please try a
         different combination of notes.</string>
@@ -38,7 +39,7 @@
         Please try a different combination of notes.</string>
     <string name="chord_default">No chord found</string>
     <string name="favorite_title">Favorite Chord Progressions</string>
-    <string name="favorite_help_text">This screen shows the chor progressions you\'ve added to
+    <string name="favorite_help_text">This screen shows the chord progressions you\'ve added to
     your favorites. Press the star next to a chord progression to remove it from your favorites.
     If you make a mistake, you can press the star again to re-add it to your favorites.\n\n
         Press your device\'s back button to return to the previous screen, or press the ? button

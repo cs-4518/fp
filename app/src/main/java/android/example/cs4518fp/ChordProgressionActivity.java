@@ -60,6 +60,8 @@ public class ChordProgressionActivity extends AppCompatActivity {
         findChords(chosenNotes);
 
         initializeRecyclerViews();
+
+        Favorites.loadFavoritesFromFile(this);
     }
 
     @Override

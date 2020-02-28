@@ -68,13 +68,13 @@ public class ChordProgressionAdapter extends RecyclerView.Adapter<ChordProgressi
                                 Toast.LENGTH_SHORT).show();
                         holder.mButton.setImageResource(R.drawable.star_empty);
                         holder.selected = false;
-                        Favorites.removeFavorite(currentItem);
+                        Favorites.removeFavorite(currentItem, mContext);
                     } else {
                         Toast.makeText(mContext, "Added " + currentItem.getProgression() + " to favorites",
                                 Toast.LENGTH_SHORT).show();
                         holder.mButton.setImageResource(R.drawable.star_full);
                         holder.selected = true;
-                        Favorites.addFavorite(currentItem);
+                        Favorites.addFavorite(currentItem, mContext);
                     }
                 }
             });
