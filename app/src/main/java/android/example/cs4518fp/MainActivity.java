@@ -192,19 +192,25 @@ public class MainActivity extends AppCompatActivity {
     };
 
     public void store(View view) {
+        String note = pitches[mPitchSeekBar.getProgress()].getNote();
+        if (storage1.equals(note) || storage2.equals(note) || storage3.equals(note)) {
+            Toast.makeText(getApplicationContext(), "That note is already stored", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (storage1.equals("")) {
-            storage1 = pitches[mPitchSeekBar.getProgress()].getNote();
+            storage1 = note;
             mStorageText1.setText(storage1);
         } else if (storage2.equals("")) {
-            storage2 = pitches[mPitchSeekBar.getProgress()].getNote();
+            storage2 = note;
             mStorageText2.setText(storage2);
         } else if (storage3.equals("")) {
-            storage3 = pitches[mPitchSeekBar.getProgress()].getNote();
+            storage3 = note;
             mStorageText3.setText(storage3);
         } else {
             storage3 = storage2;
             storage2 = storage1;
-            storage1 = pitches[mPitchSeekBar.getProgress()].getNote();
+            storage1 = note;
             mStorageText1.setText(storage1);
             mStorageText2.setText(storage2);
             mStorageText3.setText(storage3);
