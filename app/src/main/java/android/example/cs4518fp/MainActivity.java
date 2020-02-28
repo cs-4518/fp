@@ -11,7 +11,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,12 +51,21 @@ public class MainActivity extends AppCompatActivity {
     private final String STRING_KEY = "note";
     private final String STRING_KEY2 = "note2";
     private final String STRING_KEY3 = "note3";
+    private Button mClearButton;
+    private Button mStoreButton;
+    private Button mProgButton;
+    private TextView mPitchTextTitle;
+    private final static String TAG = "AppActivity";
+
 
     private SharedPreferences mPreferences;
+
+    private AudioDispatcher dispatcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate() created");
         setContentView(R.layout.activity_main);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
@@ -63,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                     123);
         }
 
-        AudioDispatcher dispatcher =
+        dispatcher =
                 AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0);
 
         mPitchText = findViewById(R.id.pitchText);
@@ -122,6 +133,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart() called");
+    }
+
 
     private void processPitch(float inputPitch) {
         if (help_visible) return;
@@ -212,13 +230,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toggleHelp(View view) {
+        mClearButton = findViewById(R.id.clearButton);
+        mStoreButton = findViewById(R.id.storeButton);
+        mProgButton = findViewById(R.id.chordProgressionButton);
+        mPitchTextTitle = findViewById(R.id.pitchText);
+
+
         if (help_visible) {
             help_visible = false;
             mHelpLayout.setVisibility(View.INVISIBLE);
+            mStoreButton.setVisibility(View.VISIBLE);
+            mClearButton.setVisibility(View.VISIBLE);
+            mProgButton.setVisibility(View.VISIBLE);
+            mPitchTextTitle.setVisibility(View.VISIBLE);
+
         } else {
             help_visible = true;
             mHelpText.scrollTo(0, 0);
             mHelpLayout.setVisibility(View.VISIBLE);
+            mStoreButton.setVisibility(View.INVISIBLE);
+            mClearButton.setVisibility(View.INVISIBLE);
+            mProgButton.setVisibility(View.INVISIBLE);
+            mPitchTextTitle.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -269,12 +302,60 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause() called");
+
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
         preferencesEditor.putString(STRING_KEY, storage1);
         preferencesEditor.putString(STRING_KEY2, storage2);
         preferencesEditor.putString(STRING_KEY3, storage3);
         preferencesEditor.apply();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume() called");
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
+                    123);
+        }
+
+        dispatcher =
+                AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0);
+
+
+
+        PitchDetectionHandler pdh = new PitchDetectionHandler() {
+            @Override
+            public void handlePitch(@NonNull PitchDetectionResult res, AudioEvent e) {
+                final float pitchInHz = res.getPitch();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        processPitch(pitchInHz);
+                    }
+                });
+            }
+        };
+        AudioProcessor pitchProcessor = new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.FFT_YIN, 22050, 1024, pdh);
+        dispatcher.addAudioProcessor(pitchProcessor);
+
+        Thread audioThread = new Thread(dispatcher, "Audio Thread");
+        audioThread.start();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop() called");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy() called");
     }
 
 }

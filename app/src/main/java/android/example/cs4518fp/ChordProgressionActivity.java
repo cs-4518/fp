@@ -18,6 +18,9 @@ public class ChordProgressionActivity extends AppCompatActivity {
     private TextView mScalesText;
     private ConstraintLayout mHelpLayout;
     private TextView mHelpText;
+    private TextView mNotes;
+    private TextView mStorageText;
+    private TextView mNotesTitle;
 
 
     @Override
@@ -37,6 +40,8 @@ public class ChordProgressionActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
 
         TextView mStorageText = findViewById(R.id.storageText);
+
+
 
         note[0] = "";
         note[1] = "";
@@ -273,13 +278,28 @@ public class ChordProgressionActivity extends AppCompatActivity {
     }
 
     public void toggleHelp(View view) {
+
+        mNotes = findViewById(R.id.storageText);
+        mNotesTitle = findViewById(R.id.notes);
+
+
         if (help_visible) {
             help_visible = false;
             mHelpLayout.setVisibility(View.INVISIBLE);
+            mNotes.setVisibility(View.VISIBLE);
+            mScalesText.setVisibility(View.VISIBLE);
+            mChordText.setVisibility(View.VISIBLE);
+            mNotesTitle.setVisibility(View.VISIBLE);
+
         } else {
             help_visible = true;
             mHelpText.scrollTo(0, 0);
             mHelpLayout.setVisibility(View.VISIBLE);
+            mNotes.setVisibility(View.INVISIBLE);
+            mScalesText.setVisibility(View.INVISIBLE);
+            mChordText.setVisibility(View.INVISIBLE);
+            mNotesTitle.setVisibility(View.INVISIBLE);
+
         }
     }
 
