@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void goToChordProgressions(View view) {
-        if (storage1.equals("")) {
+        if (storage1 == null || storage1.equals("")) {
             Toast.makeText(getApplicationContext(), "Please store one or more notes first", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -271,36 +271,5 @@ public class MainActivity extends AppCompatActivity {
         preferencesEditor.putString(STRING_KEY3, storage3);
         preferencesEditor.apply();
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
-                    123);
-        }
-
-        dispatcher =
-                AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0);
-
-        PitchDetectionHandler pdh = new PitchDetectionHandler() {
-            @Override
-            public void handlePitch(@NonNull PitchDetectionResult res, AudioEvent e) {
-                final float pitchInHz = res.getPitch();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        processPitch(pitchInHz);
-                    }
-                });
-            }
-        };
-        AudioProcessor pitchProcessor = new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.FFT_YIN, 22050, 1024, pdh);
-        dispatcher.addAudioProcessor(pitchProcessor);
-
-        Thread audioThread = new Thread(dispatcher, "Audio Thread");
-        audioThread.start();
     }
 }

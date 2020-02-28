@@ -55,6 +55,20 @@ public class ChordProgressionActivity extends AppCompatActivity {
             chosenNotes[2] = extras.getString("note3");
 
             mStorageText.setText(String.format("%s, %s, %s", chosenNotes[0], chosenNotes[1], chosenNotes[2]));
+
+            if (chosenNotes[2] == null) {
+                chosenNotes[2] = "";
+                mStorageText.setText(String.format("%s, %s", chosenNotes[0], chosenNotes[1]));
+            }
+            if (chosenNotes[1] == null) {
+                chosenNotes[1] = "";
+                mStorageText.setText(chosenNotes[0]);
+            }
+            if (chosenNotes[0] == null) {
+                chosenNotes[0] = "";
+                mStorageText.setText("");
+            }
+
         }
 
         findChords(chosenNotes);
