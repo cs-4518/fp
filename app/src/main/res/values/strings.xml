@@ -1,3 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY appname "SymPhoneic">
+    <!ENTITY store_button "Store">
+    <!ENTITY clear_button "Clear">
+    <!ENTITY chord_prog_button "Show Info">
+    ]>
+
 <resources>
-    <string name="app_name">CS4518 FP</string>
+    <string name="app_name">&appname;</string>
+    <string name="default_message">No pitch detected</string>
+    <string name="store_button">&store_button;</string>
+    <string name="clear_button">&clear_button;</string>
+    <string name="chord_prog_button">&chord_prog_button;</string>
+    <string name="help_desc">Help Button</string>
+    <string name="star_desc">Favorite</string>
+    <string name="help_title">Welcome to SymPhoneic!</string>
+    <string name="help_text">This app is designed for use by musicians
+        looking to find inspiration for chord changes in their songs.\n\nTo get started, first either
+     record yourself playing notes that you want to use, or use the slider to manually select notes.
+     Then, when you\'ve decided on a note, press the \"&store_button;\" button to save it. After storing one to
+    three notes, press the \"&chord_prog_button;\" button to see common chord progressions involving the notes
+        you\'ve selected.\n\nPress the ? button in the top right again to hide this menu.</string>
+    <string name="scales_text">Scales</string>
+    <string name="chord_progressions">Chord Progressions</string>
+    <string name="notes_text">Your Chosen Notes</string>
+    <string name="chord_progression_activity_name">Chord Progression Activity</string>
+    <string name="favorite_activity_name">Favorite Activity</string>
+    <string name="chord_help_title">Chord\nRecommendations</string>
+    <string name="chord_help_text">This screen contains recommendation for scales and chord progressions
+    that include the notes you selected. Press the star next to a chord progression to add it to
+        your favorites. If you make a mistake, you can press the star again to remove it from your
+        favorites. To view all chord progressions you\'ve favorited, press the star button in the
+        top left corner.\n\nPress your device\'s back button to return to the previous screen, or press
+        the ? button in the top right again to hide this menu.</string>
+    <string name="scales_default">No scales found with the notes you selected. Please try a
+        different combination of notes.</string>
+    <string name="chord_prog_default">No chord progressions found with the notes you selected.
+        Please try a different combination of notes.</string>
+    <string name="chord_default">No chord found</string>
+    <string name="favorite_title">Favorite Chord Progressions</string>
+    <string name="favorite_help_text">This screen shows the chord progressions you\'ve added to
+    your favorites. Press the star next to a chord progression to remove it from your favorites.
+    If you make a mistake, you can press the star again to re-add it to your favorites.\n\n
+        Press your device\'s back button to return to the previous screen, or press the ? button
+        in the top right again to hide this menu.</string>
+    <string name="favorite_button">Favorites</string>
+    <string name="favorite_default">No favorites found</string>
+    <string name="favorite_desc">Favorite Button</string>
 </resources>

@@ -2,10 +2,8 @@
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,101 +11,78 @@
         android:background="@drawable/wood"
         android:gravity="center"
         android:orientation="vertical"
-        tools:context=".MainActivity">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/pitchText"
+            android:id="@+id/notes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/default_message"
+            android:text="@string/notes_text"
             android:textColor="#000000"
-            android:textSize="30sp" />
-
-    <SeekBar
-        android:id="@+id/pitchSeekBar"
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="36dp"
-        android:max="11"
-        android:progress="0"
-        android:progressTint="#6B503B"
-        android:thumb="@drawable/custom_thumb" />
+            android:textSize="28sp" />
 
         <TextView
-            android:id="@+id/noteText"
+            android:id="@+id/storageText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="64sp" />
-
-        <Button
-            android:id="@+id/storeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/button_background"
-            android:onClick="store"
-            android:text="@string/store_button"
-            android:textColor="#000000" />
-
-
-        <TextView
-            android:id="@+id/storageText1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="20dp"
             android:textColor="#000000"
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/storageText2"
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/scales_text"
             android:textColor="#000000"
             android:textSize="24sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/scaleRecycler"
+            android:layout_width="250dp"
+            android:layout_height="140dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="12dp"
+            android:background="@color/colorLight"
+            android:scrollbars="vertical" />
 
         <TextView
-            android:id="@+id/storageText3"
+            android:id="@+id/chordTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/chord_progressions"
             android:textColor="#000000"
             android:textSize="24sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:layout_marginBottom="36dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/clearButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="32dp"
-                android:background="@drawable/button_background"
-                android:onClick="clear"
-                android:text="@string/clear_button"
-                android:textColor="#000000" />
-
-            <Button
-                android:id="@+id/chordProgressionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:background="@drawable/button_background"
-                android:onClick="goToChordProgressions"
-                android:text="@string/chord_prog_button"
-                android:textColor="#000000" />
-        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/chordRecycler"
+            android:layout_width="250dp"
+            android:layout_height="220dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="50dp"
+            android:background="@color/colorLight"
+            android:scrollbars="vertical" />
 
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/favoriteButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@null"
+        android:contentDescription="@string/favorite_desc"
+        android:onClick="goToFavorites"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/favorites" />
 
     <ImageButton
         android:id="@+id/helpButton"
@@ -125,10 +100,10 @@
         android:id="@+id/helpLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="34dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="34dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="20dp"
         android:background="@color/colorLight"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -144,8 +119,8 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:gravity="center_horizontal|center_vertical"
-            android:text="@string/help_title"
-            android:textSize="36sp"
+            android:text="@string/chord_help_title"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -160,7 +135,7 @@
             android:layout_marginBottom="24dp"
             android:gravity="center_horizontal|center_vertical"
             android:scrollbars="vertical"
-            android:text="@string/help_text"
+            android:text="@string/chord_help_text"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
