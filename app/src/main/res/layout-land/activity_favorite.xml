@@ -17,72 +17,29 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/notes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/notes_text"
-            android:textColor="#000000"
-            android:textSize="28sp" />
-
-        <TextView
-            android:id="@+id/storageText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="20dp"
-            android:textColor="#000000"
-            android:textSize="24sp" />
-
-        <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/scales_text"
+            android:text="@string/favorite_title"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="24sp" />
+            android:textSize="30sp" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/scaleRecycler"
+            android:id="@+id/favoriteRecycler"
             android:layout_width="250dp"
-            android:layout_height="140dp"
+            android:layout_height="250dp"
             android:layout_marginStart="50dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="12dp"
             android:background="@color/colorLight"
-            android:scrollbars="vertical" />
+            android:scrollbars="vertical">
 
-        <TextView
-            android:id="@+id/chordTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/chord_progressions"
-            android:textColor="#000000"
-            android:textSize="24sp" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/chordRecycler"
-            android:layout_width="250dp"
-            android:layout_height="220dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="50dp"
-            android:background="@color/colorLight"
-            android:scrollbars="vertical" />
-
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/favoriteButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@null"
-        android:contentDescription="@string/favorite_desc"
-        android:onClick="goToFavorites"
-        android:scaleType="fitCenter"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/favorites" />
 
     <ImageButton
         android:id="@+id/helpButton"
@@ -119,7 +76,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:gravity="center_horizontal|center_vertical"
-            android:text="@string/chord_help_title"
+            android:text="@string/favorite_title"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -135,7 +92,7 @@
             android:layout_marginBottom="24dp"
             android:gravity="center_horizontal|center_vertical"
             android:scrollbars="vertical"
-            android:text="@string/chord_help_text"
+            android:text="@string/favorite_help_text"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

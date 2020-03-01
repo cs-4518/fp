@@ -52,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
     private final String STRING_KEY = "note";
     private final String STRING_KEY2 = "note2";
     private final String STRING_KEY3 = "note3";
+    private Button mClearButton;
+    private Button mStoreButton;
+    private Button mProgButton;
+
 
     private SharedPreferences mPreferences;
     AudioDispatcher dispatcher;
@@ -74,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
         mStorageText1 = findViewById(R.id.storageText1);
         mStorageText2 = findViewById(R.id.storageText2);
         mStorageText3 = findViewById(R.id.storageText3);
+
+        mClearButton = findViewById(R.id.clearButton);
+        mStoreButton = findViewById(R.id.storeButton);
+        mProgButton = findViewById(R.id.chordProgressionButton);
 
         mHelpLayout = findViewById(R.id.helpLayout);
 
@@ -132,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         if (help_visible) return;
 
         if (inputPitch < 16 || inputPitch > 8000) {
-            mPitchText.setText(String.format(Locale.getDefault(), "%s", "No pitch detected"));
+            mPitchText.setText(String.format(Locale.getDefault(), "%s", "0 Hz"));
             return;
         }
 
@@ -186,19 +194,25 @@ public class MainActivity extends AppCompatActivity {
     };
 
     public void store(View view) {
+        String note = pitches[mPitchSeekBar.getProgress()].getNote();
+        if (storage1.equals(note) || storage2.equals(note) || storage3.equals(note)) {
+            Toast.makeText(getApplicationContext(), "That note is already stored", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (storage1.equals("")) {
-            storage1 = pitches[mPitchSeekBar.getProgress()].getNote();
+            storage1 = note;
             mStorageText1.setText(storage1);
         } else if (storage2.equals("")) {
-            storage2 = pitches[mPitchSeekBar.getProgress()].getNote();
+            storage2 = note;
             mStorageText2.setText(storage2);
         } else if (storage3.equals("")) {
-            storage3 = pitches[mPitchSeekBar.getProgress()].getNote();
+            storage3 = note;
             mStorageText3.setText(storage3);
         } else {
             storage3 = storage2;
             storage2 = storage1;
-            storage1 = pitches[mPitchSeekBar.getProgress()].getNote();
+            storage1 = note;
             mStorageText1.setText(storage1);
             mStorageText2.setText(storage2);
             mStorageText3.setText(storage3);
@@ -220,16 +234,25 @@ public class MainActivity extends AppCompatActivity {
         if (help_visible) {
             help_visible = false;
             mHelpLayout.setVisibility(View.INVISIBLE);
+            mStoreButton.setVisibility(View.VISIBLE);
+            mClearButton.setVisibility(View.VISIBLE);
+            mProgButton.setVisibility(View.VISIBLE);
+            mPitchText.setVisibility(View.VISIBLE);
+
         } else {
             help_visible = true;
             mHelpText.scrollTo(0, 0);
             mHelpLayout.setVisibility(View.VISIBLE);
+            mStoreButton.setVisibility(View.INVISIBLE);
+            mClearButton.setVisibility(View.INVISIBLE);
+            mProgButton.setVisibility(View.INVISIBLE);
+            mPitchText.setVisibility(View.INVISIBLE);
         }
     }
 
 
-    public void showInfo(View view) {
-        if (storage1.equals("")) {
+    public void goToChordProgressions(View view) {
+        if (storage1 == null || storage1.equals("")) {
             Toast.makeText(getApplicationContext(), "Please store one or more notes first", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -239,9 +262,9 @@ public class MainActivity extends AppCompatActivity {
         String message2 = storage2;
         String message3 = storage3;
         intent.putExtra("note1", message1);
-        if (storage2 != null)
+        if (storage2 != null && !storage2.equals(""))
             intent.putExtra("note2", message2);
-        if (storage3 != null)
+        if (storage3 != null && !storage3.equals(""))
             intent.putExtra("note3", message3);
 
         startActivity(intent);
@@ -327,5 +350,4 @@ public class MainActivity extends AppCompatActivity {
         preferencesEditor.apply();
 
     }
-
 }

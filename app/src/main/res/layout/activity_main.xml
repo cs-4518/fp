@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,19 +23,19 @@
             android:textColor="#000000"
             android:textSize="30sp" />
 
-        <SeekBar
-            android:id="@+id/pitchSeekBar"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="36dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="36dp"
-            android:max="11"
-            android:progress="0"
-            android:progressTint="#6B503B"
-            android:thumb="@drawable/custom_thumb" />
+    <SeekBar
+        android:id="@+id/pitchSeekBar"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="36dp"
+        android:max="11"
+        android:progress="0"
+        android:progressTint="#6B503B"
+        android:thumb="@drawable/custom_thumb" />
 
         <TextView
             android:id="@+id/noteText"
@@ -110,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:background="@drawable/button_background"
-                android:onClick="showInfo"
+                android:onClick="goToChordProgressions"
                 android:text="@string/chord_prog_button"
                 android:textColor="#000000" />
         </LinearLayout>

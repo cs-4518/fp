@@ -1,24 +1,31 @@
 package android.example.cs4518fp;
 
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class ChordProgressionActivity extends AppCompatActivity {
 
-    private final String[] note = new String[3];
+    private RecyclerView mChordRecycler;
+    private RecyclerView mScalesRecycler;
+    private ArrayList<ChordProgression> mChords = null;
+    private ArrayList<Scale> mScales = null;
+
+    private final String[] chosenNotes = new String[3];
     private boolean help_visible = false;
     private String[][] allScales;
 
-    private TextView mChordText;
-    private TextView mScalesText;
     private ConstraintLayout mHelpLayout;
     private TextView mHelpText;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +34,8 @@ public class ChordProgressionActivity extends AppCompatActivity {
 
         makeScales();
 
-        mChordText = findViewById(R.id.chords);
-        mScalesText = findViewById(R.id.scales);
+        mChordRecycler = findViewById(R.id.chordRecycler);
+        mScalesRecycler = findViewById(R.id.scaleRecycler);
 
         mHelpLayout = findViewById(R.id.helpLayout);
         mHelpText = findViewById(R.id.helpText);
@@ -38,21 +45,103 @@ public class ChordProgressionActivity extends AppCompatActivity {
 
         TextView mStorageText = findViewById(R.id.storageText);
 
-        note[0] = "";
-        note[1] = "";
-        note[2] = "";
+        chosenNotes[0] = "";
+        chosenNotes[1] = "";
+        chosenNotes[2] = "";
 
         if (extras != null) {
-            note[0] = extras.getString("note1");
-            note[1] = extras.getString("note2");
-            note[2] = extras.getString("note3");
+            chosenNotes[0] = extras.getString("note1");
+            chosenNotes[1] = extras.getString("note2");
+            chosenNotes[2] = extras.getString("note3");
 
-            mStorageText.setText(String.format("%s, %s, %s", note[0], note[1], note[2]));
+            mStorageText.setText(String.format("%s, %s, %s", chosenNotes[0], chosenNotes[1], chosenNotes[2]));
+
+            if (chosenNotes[2] == null) {
+                chosenNotes[2] = "";
+                mStorageText.setText(String.format("%s, %s", chosenNotes[0], chosenNotes[1]));
+            }
+            if (chosenNotes[1] == null) {
+                chosenNotes[1] = "";
+                mStorageText.setText(chosenNotes[0]);
+            }
+            if (chosenNotes[0] == null) {
+                chosenNotes[0] = "";
+                mStorageText.setText("");
+            }
+
         }
-        findChords(note);
+
+        findChords(chosenNotes);
+
+        initializeRecyclerViews();
+
+        Favorites.loadFavoritesFromFile(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (help_visible) {
+            toggleHelp(null);
+        }
+
+        initializeRecyclerViews();
+    }
+
+    private static ArrayList<ChordProgression> removeDuplicates(ArrayList<ChordProgression> arr) {
+        ArrayList<ChordProgression> fin = new ArrayList<>();
+        for (ChordProgression cp : arr) {
+            boolean contained = false;
+            for (ChordProgression c : fin) {
+                if (c.equals(cp)) {
+                    contained = true;
+                }
+            }
+
+            if (!contained) {
+                fin.add(cp);
+            }
+        }
+
+        return fin;
+    }
+
+    private void initializeRecyclerViews() {
+        mChordRecycler.setHasFixedSize(true);
+        RecyclerView.LayoutManager mChordsLayoutManager = new LinearLayoutManager(this);
+        mChordRecycler.setLayoutManager(mChordsLayoutManager);
+        RecyclerView.Adapter mChordsAdapter;
+
+        if (mChords != null) {
+            mChords = removeDuplicates(mChords);
+
+            mChordsAdapter = new ChordProgressionAdapter(mChords, this);
+            mChordsAdapter.notifyDataSetChanged();
+        } else {
+            mChordsAdapter = new ChordProgressionAdapter(this, getString(R.string.chord_prog_default));
+            mChordsAdapter.notifyDataSetChanged();
+        }
+        mChordRecycler.setAdapter(mChordsAdapter);
+
+
+        mScalesRecycler.setHasFixedSize(true);
+        RecyclerView.LayoutManager mScalesLayoutManager = new LinearLayoutManager(this);
+        RecyclerView.Adapter mScalesAdapter;
+
+        if (mScales != null)
+            mScalesAdapter = new ScaleAdapter(mScales);
+        else
+            mScalesAdapter = new ScaleAdapter();
+
+        mScalesRecycler.setLayoutManager(mScalesLayoutManager);
+        mScalesRecycler.setAdapter(mScalesAdapter);
     }
 
     private void findChords(String[] note) {
+        ArrayList<ChordProgression> chords = new ArrayList<>();
+        ArrayList<Scale> scales = new ArrayList<>();
+
         boolean check1, check2, check3;
         int I = 0;
         int II = 1;
@@ -61,8 +150,6 @@ public class ChordProgressionActivity extends AppCompatActivity {
         int V = 4;
         int VI = 5;
         int VII = 6;
-        mChordText.setText(getResources().getString(R.string.chord_prog_default));
-        mScalesText.setText(getResources().getString(R.string.scales_default));
         for (int i = 0; i < 15; i++) {
             check1 = false;
             check2 = false;
@@ -235,51 +322,62 @@ public class ChordProgressionActivity extends AppCompatActivity {
                     }
                 } else if (!note[2].equals("") && note[2].equals(allScales[i][j])) {
                     check3 = true;
-
                 }
 
             }
             if (!note[1].equals("") && note[2].equals("") & check1 && check2) {
-                Log.d("testLoop", "testLoop");
                 /*mScalesText.append(allScales[i][7] + " (" + allScales[i][0] + " - " + allScales[i][1] + " - "
                         + allScales[i][2] + " - " + allScales[i][3] + " - " + allScales[i][4]
                         + " - " + allScales[i][5] + " - " + allScales[i][6] + ")\n");*/
-                mChordText.setText("");
-                mScalesText.setText("");
-                mScalesText.append(allScales[i][7] + "\n");
-                mChordText.append(allScales[i][I] + " - " + allScales[i][V] + " - " + allScales[i][VI] + "m -" + allScales[i][IV] + "\n");
-                mChordText.append(allScales[i][I] + " - " + allScales[i][IV] + " - " + allScales[i][V] + "\n");
+                scales.add(new Scale(allScales[i][7]));
+
+                chords.add(new ChordProgression(new ArrayList<>(
+                        Arrays.asList(allScales[i][I], allScales[i][V], allScales[i][VI] + "m", allScales[i][IV]))));
+                chords.add(new ChordProgression(new ArrayList<>(
+                        Arrays.asList(allScales[i][I], allScales[i][IV], allScales[i][V]))));
             } else if (!note[1].equals("") && !note[2].equals("") && check1 && check2 && check3) {
-                mChordText.setText("");
-                mScalesText.setText("");
-                mScalesText.append(allScales[i][7] + "\n");
+                scales.add(new Scale(allScales[i][7]));
 
-                mChordText.append(allScales[i][I] + " - " + allScales[i][V] + " - " + allScales[i][VI] + "m -" + allScales[i][IV] + "\n");
-                mChordText.append(allScales[i][I] + " - " + allScales[i][IV] + " - " + allScales[i][V] + "\n");
+                chords.add(new ChordProgression(new ArrayList<>(
+                        Arrays.asList(allScales[i][I], allScales[i][V], allScales[i][VI] + "m", allScales[i][IV]))));
+                chords.add(new ChordProgression(new ArrayList<>(
+                        Arrays.asList(allScales[i][I], allScales[i][IV], allScales[i][V]))));
             } else if (note[1].equals("") && note[2].equals("") && check1) {
-                mChordText.setText("");
-                mScalesText.setText("");
-                mScalesText.append(allScales[i][7] + "\n");
+                scales.add(new Scale(allScales[i][7]));
 
-                mChordText.append(allScales[i][I] + " - " + allScales[i][V] + " - " + allScales[i][VI] + "m -" + allScales[i][IV] + "\n");
-                mChordText.append(allScales[i][I] + " - " + allScales[i][IV] + " - " + allScales[i][V] + "\n");
+                chords.add(new ChordProgression(new ArrayList<>(
+                        Arrays.asList(allScales[i][I], allScales[i][V], allScales[i][VI] + "m", allScales[i][IV]))));
+
+                chords.add(new ChordProgression(new ArrayList<>(
+                        Arrays.asList(allScales[i][I], allScales[i][IV], allScales[i][V]))));
             }
-
-
         }
         note[0] = "";
         note[1] = "";
         note[2] = "";
+        if (chords.size() > 0)
+            mChords = chords;
+        if (scales.size() > 0)
+            mScales = scales;
     }
 
     public void toggleHelp(View view) {
+        TextView storageText = findViewById(R.id.storageText);
+        TextView mNotesTitle = findViewById(R.id.notes);
+
         if (help_visible) {
             help_visible = false;
             mHelpLayout.setVisibility(View.INVISIBLE);
+            storageText.setVisibility(View.VISIBLE);
+            mNotesTitle.setVisibility(View.VISIBLE);
+
         } else {
             help_visible = true;
             mHelpText.scrollTo(0, 0);
             mHelpLayout.setVisibility(View.VISIBLE);
+            storageText.setVisibility(View.INVISIBLE);
+            mNotesTitle.setVisibility(View.INVISIBLE);
+
         }
     }
 
@@ -304,5 +402,11 @@ public class ChordProgressionActivity extends AppCompatActivity {
         allScales = new String[][]{cMajor, gMajor, dMajor, aMajor, eMajor,
                 bMajor, fSharpMajor, cSharpMajor, fMajor, bFlatMajor, eFlatMajor, aFlatMajor,
                 dFlatMajor, gFlatMajor, cFlatMajor};
+    }
+
+    public void goToFavorites(View view) {
+        Intent intent = new Intent(this, FavoriteActivity.class);
+
+        startActivity(intent);
     }
 }
