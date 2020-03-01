@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private SharedPreferences mPreferences;
-    AudioDispatcher dispatcher;
+    private AudioDispatcher dispatcher;
     boolean pause = false;
 
     @Override
