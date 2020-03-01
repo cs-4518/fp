@@ -144,12 +144,9 @@ public class ChordProgressionActivity extends AppCompatActivity {
 
         boolean check1, check2, check3;
         int I = 0;
-        int II = 1;
-        int III = 2;
         int IV = 3;
         int V = 4;
         int VI = 5;
-        int VII = 6;
         for (int i = 0; i < 15; i++) {
             check1 = false;
             check2 = false;
@@ -159,132 +156,90 @@ public class ChordProgressionActivity extends AppCompatActivity {
                 if ((note[0]).contains("/")) {
                     if (note[0].contains("A♭") && allScales[i][j].contains("A♭")) {
                         I = 0;
-                        II = 1;
-                        III = 2;
                         IV = 3;
                         V = 4;
                         VI = 5;
-                        VII = 6;
                         check1 = true;
                     } else if (note[0].contains("B♭") && allScales[i][j].contains("B♭")) {
                         I = 1;
-                        II = 2;
-                        III = 3;
                         IV = 4;
                         V = 5;
                         VI = 6;
-                        VII = 0;
                         check1 = true;
                     } else if (note[0].contains("C♯") && allScales[i][j].contains("C♯")) {
                         I = 2;
-                        II = 3;
-                        III = 4;
                         IV = 5;
                         V = 6;
                         VI = 0;
-                        VII = 1;
                         check1 = true;
                     } else if (note[0].contains("D♯") && allScales[i][j].contains("D♯")) {
                         I = 3;
-                        II = 4;
-                        III = 5;
                         IV = 6;
                         V = 0;
                         VI = 1;
-                        VII = 2;
                         check1 = true;
                     } else if (note[0].contains("E♭") && allScales[i][j].contains("E♭")) {
                         I = 4;
-                        II = 5;
-                        III = 6;
                         IV = 0;
                         V = 1;
                         VI = 2;
-                        VII = 3;
                         check1 = true;
                     } else if (note[0].contains("F♯") && allScales[i][j].contains("F♯")) {
                         I = 5;
-                        II = 6;
-                        III = 0;
                         IV = 1;
                         V = 2;
                         VI = 3;
-                        VII = 4;
                         check1 = true;
                     } else if (note[0].contains("G♯") && allScales[i][j].contains("G♯")) {
                         I = 6;
-                        II = 0;
-                        III = 1;
                         IV = 2;
                         V = 3;
                         VI = 4;
-                        VII = 5;
                         check1 = true;
                     }
                 } else if (note[0].equals(allScales[i][j])) {
                     if (note[0].contains("A")) {
                         I = 0;
-                        II = 1;
-                        III = 2;
                         IV = 3;
                         V = 4;
                         VI = 5;
-                        VII = 6;
                     } else if (note[0].contains("B")) {
                         I = 1;
-                        II = 2;
-                        III = 3;
                         IV = 4;
                         V = 5;
                         VI = 6;
-                        VII = 0;
                     } else if (note[0].contains("C")) {
                         I = 2;
-                        II = 3;
-                        III = 4;
                         IV = 5;
                         V = 6;
                         VI = 0;
-                        VII = 1;
                     } else if (note[0].contains("D")) {
                         I = 3;
-                        II = 4;
-                        III = 5;
                         IV = 6;
                         V = 0;
                         VI = 1;
-                        VII = 2;
                     } else if (note[0].contains("E")) {
                         I = 4;
-                        II = 5;
-                        III = 6;
                         IV = 0;
                         V = 1;
                         VI = 2;
-                        VII = 3;
                     } else if (note[0].contains("F")) {
                         I = 5;
-                        II = 6;
-                        III = 0;
                         IV = 1;
                         V = 2;
                         VI = 3;
-                        VII = 4;
                     } else {
                         I = 6;
-                        II = 0;
-                        III = 1;
                         IV = 2;
                         V = 3;
                         VI = 4;
-                        VII = 5;
 
                     }
                     check1 = true;
 
                 }
 
-                if ((note[1]).contains("/") && !note[1].equals("")) {
+                if ((note[1]).contains("/")) {
                     if (note[1].contains("A♭") && allScales[i][j].contains("A♭")) {
                         check2 = true;
                     } else if (note[1].contains("B♭") && allScales[i][j].contains("B♭")) {
@@ -304,7 +259,7 @@ public class ChordProgressionActivity extends AppCompatActivity {
                     check2 = true;
                 }
 
-                if ((note[2]).contains("/") && !note[2].equals("")) {
+                if ((note[2]).contains("/")) {
                     if (note[2].contains("A♭") && allScales[i][j].contains("A♭")) {
                         check3 = true;
                     } else if (note[2].contains("B♭") && allScales[i][j].contains("B♭")) {
@@ -326,9 +281,6 @@ public class ChordProgressionActivity extends AppCompatActivity {
 
             }
             if (!note[1].equals("") && note[2].equals("") & check1 && check2) {
-                /*mScalesText.append(allScales[i][7] + " (" + allScales[i][0] + " - " + allScales[i][1] + " - "
-                        + allScales[i][2] + " - " + allScales[i][3] + " - " + allScales[i][4]
-                        + " - " + allScales[i][5] + " - " + allScales[i][6] + ")\n");*/
                 scales.add(new Scale(allScales[i][7]));
 
                 chords.add(new ChordProgression(new ArrayList<>(

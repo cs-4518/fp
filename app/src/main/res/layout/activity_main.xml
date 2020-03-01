@@ -43,22 +43,22 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="64sp" />
+            android:textSize="56sp" />
 
         <Button
             android:id="@+id/pauseButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/button_background"
-
+            android:text="@string/stop_recording"
             android:onClick="pause" />
 
         <Button
             android:id="@+id/storeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:background="@drawable/button_background"
             android:onClick="store"

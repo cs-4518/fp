@@ -3,7 +3,7 @@ package android.example.cs4518fp;
 import java.util.ArrayList;
 
 class ChordProgression {
-    private ArrayList<String> mChords;
+    private final ArrayList<String> mChords;
     private final String mProgression;
 
     ChordProgression(ArrayList<String> chords) {

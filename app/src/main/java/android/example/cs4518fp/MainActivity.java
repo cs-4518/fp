@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -33,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String PERSISTENT_FILE = "com.example.android.cs4518fp";
 
     private boolean help_visible = false;
+    private boolean paused = false;
 
     private String storage1 = "";
     private String storage2 = "";
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private ConstraintLayout mHelpLayout;
     private SeekBar mPitchSeekBar;
     private Pitch[] pitches;
-    private Button pauseB;
+    private Button mPauseButton;
 
     private final String STRING_KEY = "note";
     private final String STRING_KEY2 = "note2";
@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences mPreferences;
     private AudioDispatcher dispatcher;
-    boolean pause = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
         mPitchSeekBar.setMax(NUM_PITCHES - 1);
 
         mPreferences = getSharedPreferences(PERSISTENT_FILE, MODE_PRIVATE);
-        pauseB = findViewById(R.id.pauseButton);
-        pauseB.setText("  Stop Recording  ");
+        mPauseButton = findViewById(R.id.pauseButton);
+        mPauseButton.setText(String.format("  %s  ", getString(R.string.stop_recording)));
 
         PitchDetectionHandler pdh = new PitchDetectionHandler() {
             @Override
@@ -272,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void pause(View view) {
 
-        if(pause){
+        if (paused) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
@@ -300,43 +299,21 @@ public class MainActivity extends AppCompatActivity {
 
             Thread audioThread = new Thread(dispatcher, "Audio Thread");
             audioThread.start();
-            pause = false;
-            pauseB.setText("  Stop Recording  ");
+            paused = false;
+            mPauseButton.setText(String.format("  %s  ", getString(R.string.stop_recording)));
+            mPitchText.setText(String.format(Locale.getDefault(), "%s", "0 Hz"));
         } else {
             try {
                 if (!dispatcher.isStopped()) {
                     dispatcher.stop();
-                    pause = true;
-                    pauseB.setText("  Start Recording  ");
+                    paused = true;
+                    mPauseButton.setText(String.format("  %s  ", getString(R.string.start_recording)));
+                    mPitchText.setText(String.format(Locale.getDefault(), "%s", getString(R.string.not_recording)));
                 }
             } catch (Exception ex) {
                 Toast.makeText(this, "Error: " + ex, Toast.LENGTH_LONG).show();
             }
 
-        }
-    }
-
-    private class Pitch {
-        final String note;
-        final float basePitch;
-
-        Pitch(String note, float basePitch) {
-            this.note = note;
-            this.basePitch = basePitch;
-        }
-
-        boolean matches(float pitch, float tolerance) {
-            float tempPitch = basePitch;
-            while (tempPitch < 8000) {
-                if (pitch >= (tempPitch - tolerance) && pitch <= (tempPitch + tolerance))
-                    return true;
-                tempPitch *= 2;
-            }
-            return false;
-        }
-
-        String getNote() {
-            return note;
         }
     }
 
