@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String PERSISTENT_FILE = "com.example.android.cs4518fp";
 
     private boolean help_visible = false;
+    private boolean paused = false;
 
     private String storage1 = "";
     private String storage2 = "";
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private ConstraintLayout mHelpLayout;
     private SeekBar mPitchSeekBar;
     private Pitch[] pitches;
+    private Button mPauseButton;
 
     private final String STRING_KEY = "note";
     private final String STRING_KEY2 = "note2";
@@ -56,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private SharedPreferences mPreferences;
-
     private AudioDispatcher dispatcher;
 
     @Override
@@ -69,9 +70,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
                     123);
         }
-
-        dispatcher =
-                AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0);
+        dispatcher = AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0);
 
         mPitchText = findViewById(R.id.pitchText);
         mNoteText = findViewById(R.id.noteText);
@@ -93,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
         mPitchSeekBar.setMax(NUM_PITCHES - 1);
 
         mPreferences = getSharedPreferences(PERSISTENT_FILE, MODE_PRIVATE);
+        mPauseButton = findViewById(R.id.pauseButton);
+        mPauseButton.setText(String.format("  %s  ", getString(R.string.stop_recording)));
 
         PitchDetectionHandler pdh = new PitchDetectionHandler() {
             @Override
@@ -266,6 +267,54 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("note3", message3);
 
         startActivity(intent);
+    }
+
+    public void pause(View view) {
+
+        if (paused) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
+                        123);
+            }
+            dispatcher = AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0);
+
+
+            mPreferences = getSharedPreferences(PERSISTENT_FILE, MODE_PRIVATE);
+
+            PitchDetectionHandler pdh = new PitchDetectionHandler() {
+                @Override
+                public void handlePitch(@NonNull PitchDetectionResult res, AudioEvent e) {
+                    final float pitchInHz = res.getPitch();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            processPitch(pitchInHz);
+                        }
+                    });
+                }
+            };
+            AudioProcessor pitchProcessor = new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.FFT_YIN, 22050, 1024, pdh);
+            dispatcher.addAudioProcessor(pitchProcessor);
+
+            Thread audioThread = new Thread(dispatcher, "Audio Thread");
+            audioThread.start();
+            paused = false;
+            mPauseButton.setText(String.format("  %s  ", getString(R.string.stop_recording)));
+            mPitchText.setText(String.format(Locale.getDefault(), "%s", "0 Hz"));
+        } else {
+            try {
+                if (!dispatcher.isStopped()) {
+                    dispatcher.stop();
+                    paused = true;
+                    mPauseButton.setText(String.format("  %s  ", getString(R.string.start_recording)));
+                    mPitchText.setText(String.format(Locale.getDefault(), "%s", getString(R.string.not_recording)));
+                }
+            } catch (Exception ex) {
+                Toast.makeText(this, "Error: " + ex, Toast.LENGTH_LONG).show();
+            }
+
+        }
     }
 
     @Override

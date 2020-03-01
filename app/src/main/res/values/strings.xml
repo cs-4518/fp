@@ -4,6 +4,7 @@
     <!ENTITY store_button "Store">
     <!ENTITY clear_button "Clear">
     <!ENTITY chord_prog_button "Show Info">
+    <!ENTITY stop_recording_button "Stop Recording">
     ]>
 
 <resources>
@@ -18,8 +19,10 @@
     <string name="help_text">This app is designed for use by musicians
         looking to find inspiration for chord changes in their songs.\n\nTo get started, first either
      record yourself playing notes that you want to use, or use the slider to manually select notes.
-     Then, when you\'ve decided on a note, press the \"&store_button;\" button to save it. After storing one to
-    three notes, press the \"&chord_prog_button;\" button to see common chord progressions involving the notes
+     Then, when you\'ve decided on a note, press the \"&store_button;\" button to save it. You can
+        also press the \"&stop_recording_button;\" button to temporarily disable the microphone, then press
+        the button again to re-enable the microphone. After storing one to three notes, press the
+        \"&chord_prog_button;\" button to see common chord progressions involving the notes
         you\'ve selected.\n\nPress the ? button in the top right again to hide this menu.</string>
     <string name="scales_text">Scales</string>
     <string name="chord_progressions">Chord Progressions</string>
@@ -44,7 +47,9 @@
     If you make a mistake, you can press the star again to re-add it to your favorites.\n\n
         Press your device\'s back button to return to the previous screen, or press the ? button
         in the top right again to hide this menu.</string>
-    <string name="favorite_button">Favorites</string>
     <string name="favorite_default">No favorites found</string>
     <string name="favorite_desc">Favorite Button</string>
+    <string name="start_recording">Start Recording</string>
+    <string name="stop_recording">&stop_recording_button;</string>
+    <string name="not_recording">Not Recording</string>
 </resources>

@@ -13,7 +13,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class ChordProgressionAdapter extends RecyclerView.Adapter<ChordProgressionAdapter.ChordProgressionViewHolder> {
-    private ArrayList<ChordProgression> mChordProgressions;
+    private final ArrayList<ChordProgression> mChordProgressions;
     private final Context mContext;
     private String mErrorMessage = "No Chord Progressions Found";
 
