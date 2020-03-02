@@ -42,6 +42,10 @@ class ChordProgression {
 
     @Override
     public boolean equals(Object o) {
+        if (o == null || mProgression == null) {
+            return false;
+        }
+
         if (o == this) {
             return true;
         }
@@ -50,6 +54,12 @@ class ChordProgression {
             return false;
         }
 
-        return ((ChordProgression) o).getProgression().equals(mProgression);
+        boolean b = false;
+        try {
+            b = ((ChordProgression) o).getProgression().equals(mProgression);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return b;
     }
 }
